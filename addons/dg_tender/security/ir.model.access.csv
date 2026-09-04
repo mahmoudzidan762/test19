@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bid_file,access_bid_file,model_bid_file,,1,1,1,1
+access_project_customer_deduction,access_project_customer_deduction,model_project_customer_deduction,,1,1,1,1
+access_project_subcontract_deduction,access_project_subcontract_deduction,model_project_subcontract_deduction,,1,1,1,1
+access_project_customer_addition,access_project_customer_addition,model_project_customer_addition,,1,1,1,1
+access_project_subcontract_addition,access_project_subcontract_addition,model_project_subcontract_addition,,1,1,1,1
+access_crm_lead,access_crm_lead,model_crm_lead,,1,1,1,1
+access_project_payment_request,access_project_payment_request,model_project_payment_request,,1,1,1,1
+access_bank_guarantee,access_bank_guarantee,model_bank_guarantee,,1,1,1,1
+access_account_bank_statement_line,access_account_bank_statement_line,model_account_bank_statement_line,,1,1,1,1
+access_crm_project_category,access_crm_project_category,model_crm_project_category,,1,1,1,1
+

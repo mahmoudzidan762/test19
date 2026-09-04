@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_field_tracker_config_manager,field.tracker.config manager,model_field_tracker_config,base.group_system,1,1,1,1
+access_field_tracker_config_user,field.tracker.config user,model_field_tracker_config,base.group_user,1,0,0,0
+access_field_tracker_log_manager,field.tracker.log manager,model_field_tracker_log,base.group_system,1,1,1,1
+access_field_tracker_log_user,field.tracker.log user,model_field_tracker_log,base.group_user,1,0,0,0
+access_field_tracker_service,field.tracker.service,model_field_tracker_service,base.group_user,1,0,0,0

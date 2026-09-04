@@ -1,0 +1,30 @@
+<odoo>
+    <data noupdate="1">
+        <record id="seq_boq" model="ir.sequence">
+            <field name="name">Bill Of Quantity Sequence</field>
+            <field name="code">bill.of.quantity</field>
+            <field name="prefix">BOQ/</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <record id="seq_variation_order" model="ir.sequence">
+            <field name="name">Variation Order Sequence</field>
+            <field name="code">variation.order</field>
+            <field name="prefix">VO/</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+
+        <record id="seq_ipc_certificate" model="ir.sequence">
+            <field name="name">IPCs Certificate Sequence</field>
+            <field name="code">ipc.certificate</field>
+            <field name="prefix">IPC/</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report Action -->
+    <record id="action_report_boq" model="ir.actions.report">
+        <field name="name">Print Bill of Quantity</field>
+        <field name="model">bill.of.quantity</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dg_boq.report_boq_template</field>
+        <field name="report_file">dg_boq.report_boq_template</field>
+        <field name="binding_model_id" ref="model_bill_of_quantity"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template -->
+    <template id="report_boq_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <!-- Header -->
+                        <div style="border-bottom: 3px solid #2c3e50; margin-bottom: 24px; padding-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                <div>
+                                    <h1 style="margin: 0; font-size: 26px; color: #2c3e50; font-weight: 700;">
+                                        Bill of Quantity
+                                    </h1>
+                                    <h2 style="margin: 4px 0 0 0; font-size: 18px; color: #7f8c8d; font-weight: 400;">
+                                        <t t-esc="doc.name"/>
+                                    </h2>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span t-if="doc.state == 'in_progress'"
+                                          style="background: #27ae60; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        In Progress
+                                    </span>
+                                    <span t-if="doc.state == 'done'"
+                                          style="background: #2980b9; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Done
+                                    </span>
+                                    <span t-if="doc.state == 'cancel'"
+                                          style="background: #e74c3c; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Cancelled
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Info Grid -->
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+
+                            <!-- Left column -->
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 6px; padding: 16px;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Project Details
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0; width: 45%;">Project</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.lead_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0; width: 45%;">Printed by User</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="env.user.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Customer</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.partner_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Project Manager</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.project_manager_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Quotation</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.sale_order_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Right column -->
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 6px; padding: 16px;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Timeline &amp; Progress
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0; width: 45%;">Start Date</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.st_date or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">End Date</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.end_date or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Duration</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.date_duration or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Billing Progress</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="'%.2f' % doc.billed_progress"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Onsite Progress</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="'%.2f' % doc.onsite_progress"/>%
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- BOQ Lines Table -->
+                        <h4 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Main Items
+                        </h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 24px;">
+                            <thead>
+                                <tr style="background: #2c3e50; color: white;">
+                                    <th style="padding: 9px 10px; text-align: left; font-weight: 600;">#</th>
+                                    <th style="padding: 9px 10px; text-align: left; font-weight: 600;">Item</th>
+                                    <th style="padding: 9px 10px; text-align: left; font-weight: 600;">UOM</th>
+                                    <th style="padding: 9px 10px; text-align: center; font-weight: 600;">Master QTY</th>
+                                    <th style="padding: 9px 10px; text-align: center; font-weight: 600;">New QTY</th>
+                                    <th style="padding: 9px 10px; text-align: left; font-weight: 600;">Type</th>
+                                    <th style="padding: 9px 10px; text-align: right; font-weight: 600;">Unit Price</th>
+                                    <th style="padding: 9px 10px; text-align: center; font-weight: 600;">Margin %</th>
+                                    <th style="padding: 9px 10px; text-align: center; font-weight: 600;">Overhead %</th>
+                                    <th style="padding: 9px 10px; text-align: center; font-weight: 600;">Billed %</th>
+                                    <th style="padding: 9px 10px; text-align: center; font-weight: 600;">Onsite %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.boq_line_ids" t-as="line">
+                                    <tr t-attf-style="background: {{ '#ffffff' if line_index % 2 == 0 else '#f8f9fa' }};">
+                                        <td style="padding: 8px 10px; color: #7f8c8d;">
+                                            <t t-esc="line.sequence or line_index + 1"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="line.items or line.name or '—'"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; color: #555;">
+                                            <t t-esc="line.uom_id.name or '—'"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.qty or 0)"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.new_variation_qty or 0)"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; color: #555;">
+                                            <t t-esc="line.type_of_implement or '—'"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: right; color: #555;">
+                                            <t t-esc="'%.2f' % (line.unit_price or 0)"/>
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.margin or 0)"/>%
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.overhead or 0)"/>%
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.billed_progress or 0)"/>%
+                                        </td>
+                                        <td style="padding: 8px 10px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.onsite_progress or 0)"/>%
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr t-if="not doc.boq_line_ids">
+                                    <td colspan="11" style="padding: 16px; text-align: center; color: #aaa; font-style: italic;">
+                                        No items found.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Accounting Summary -->
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+                            <div style="width: 320px; background: #f8f9fa; border-radius: 6px; padding: 16px;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Accounting Summary
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Retention %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.retention_percent"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Total Retention Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.retention_amount_total"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-top: 1px solid #dee2e6;">
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Advanced Payment %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.advanced_payment_percent"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Advanced Payment Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.advanced_payment_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Outstanding Adv. Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.outstanding_advanced_payment_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Outstanding Adv. %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.outstanding_advanced_payment_percent"/>%
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Footer note -->
+                        <div style="border-top: 1px solid #dee2e6; padding-top: 10px; font-size: 11px; color: #aaa; text-align: center;">
+                            Generated by Construction Module · <t t-esc="doc.name"/>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

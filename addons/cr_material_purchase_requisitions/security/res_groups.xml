@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id = 'cr_material_purchase_requisitions.user_access' model='res.groups'>
+        <field name='name'>Purchase Requisition User</field>
+    </record>
+
+    <record id = 'cr_material_purchase_requisitions.manager_access' model='res.groups'>
+        <field name='name'>Purchase Requisition Manager</field>
+    </record>
+
+    <record id = 'cr_material_purchase_requisitions.department_access' model='res.groups'>
+        <field name='name'>Purchase Requisition Department Manager</field>
+    </record>
+
+</odoo>

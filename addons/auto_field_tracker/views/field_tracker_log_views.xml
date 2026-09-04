@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FIELD TRACKER LOG — Form View
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="view_field_tracker_log_form" model="ir.ui.view">
+        <field name="name">field.tracker.log.form</field>
+        <field name="model">field.tracker.log</field>
+        <field name="arch" type="xml">
+            <form string="Field Change Log" create="false" edit="false" delete="false">
+                <header>
+                    <button name="action_open_record"
+                            string="Open Changed Record"
+                            type="object"
+                            class="btn-primary"
+                            icon="fa-external-link"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="summary" readonly="1"/></h1>
+                    </div>
+
+                    <group>
+                        <group string="📋 Change Details">
+                            <field name="change_type"  widget="badge"
+                                   decoration-success="change_type == 'create'"
+                                   decoration-warning="change_type == 'write'"
+                                   decoration-danger="change_type == 'unlink'"/>
+                            <field name="field_label"/>
+                            <field name="field_name"/>
+                            <field name="field_type"/>
+                        </group>
+                        <group string="👤 Who / When">
+                            <field name="changed_by"/>
+                            <field name="changed_by_name"/>
+                            <field name="write_date" string="Changed At"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="📌 Record">
+                            <field name="model_label"/>
+                            <field name="model_name"/>
+                            <field name="record_id"/>
+                            <field name="record_name"/>
+                        </group>
+                        <group string="🔄 Values">
+                            <field name="old_value" string="Before"/>
+                            <field name="new_value" string="After"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FIELD TRACKER LOG — List View
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="view_field_tracker_log_list" model="ir.ui.view">
+        <field name="name">field.tracker.log.list</field>
+        <field name="model">field.tracker.log</field>
+        <field name="arch" type="xml">
+            <list string="Field Change Logs"
+                  create="false" edit="false"
+                  decoration-success="change_type == 'create'"
+                  decoration-warning="change_type == 'write'"
+                  decoration-danger="change_type == 'unlink'">
+                <field name="write_date"     string="Date"/>
+                <field name="change_type"    widget="badge"
+                       decoration-success="change_type == 'create'"
+                       decoration-warning="change_type == 'write'"
+                       decoration-danger="change_type == 'unlink'"/>
+                <field name="model_label"    string="Model"/>
+                <field name="record_name"    string="Record"/>
+                <field name="field_label"    string="Field"/>
+                <field name="old_value"      string="Before"/>
+                <field name="new_value"      string="After"/>
+                <field name="changed_by"/>
+                <button name="action_open_record"
+                        string="Open"
+                        type="object"
+                        icon="fa-external-link"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FIELD TRACKER LOG — Search View
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="view_field_tracker_log_search" model="ir.ui.view">
+        <field name="name">field.tracker.log.search</field>
+        <field name="model">field.tracker.log</field>
+        <field name="arch" type="xml">
+            <search string="Search Change Logs">
+                <field name="model_name"/>
+                <field name="record_name"/>
+                <field name="field_label"/>
+                <field name="changed_by"/>
+                <field name="old_value"/>
+                <field name="new_value"/>
+                <filter string="Created"  name="created"  domain="[('change_type','=','create')]"/>
+                <filter string="Updated"  name="updated"  domain="[('change_type','=','write')]"/>
+                <filter string="Deleted"  name="deleted"  domain="[('change_type','=','unlink')]"/>
+                <separator/>
+                <filter string="Today" name="today"
+                        domain="[('write_date', '&gt;=', 'today'), ('write_date', '&lt;', 'today +1d')]"/>
+                <filter string="Last 7 Days" name="this_week"
+                        domain="[('write_date', '&gt;=', 'today -7d')]"/>
+                <separator/>
+                <group>
+                    <filter string="Model"      name="grp_model"   context="{'group_by': 'model_name'}"/>
+                    <filter string="Record"     name="grp_record"  context="{'group_by': 'record_name'}"/>
+                    <filter string="Field"      name="grp_field"   context="{'group_by': 'field_label'}"/>
+                    <filter string="Changed By" name="grp_user"    context="{'group_by': 'changed_by'}"/>
+                    <filter string="Change Type" name="grp_type"   context="{'group_by': 'change_type'}"/>
+                    <filter string="Date"        name="grp_date"   context="{'group_by': 'write_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════
+         ACTION + MENU
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="action_field_tracker_log" model="ir.actions.act_window">
+        <field name="name">Field Change History</field>
+        <field name="res_model">field.tracker.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No change logs yet!
+            </p>
+            <p>
+                Configure trackers in <strong>Field Tracker → Tracker Configurations</strong>
+                and changes will appear here automatically.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_field_tracker_logs"
+              name="Change History"
+              parent="menu_field_tracker_root"
+              action="action_field_tracker_log"
+              sequence="20"
+              groups="base.group_system"/>
+
+</odoo>

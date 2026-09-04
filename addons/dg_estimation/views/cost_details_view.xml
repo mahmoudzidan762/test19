@@ -1,0 +1,118 @@
+<odoo>
+    <record id="view_cost_details_form" model="ir.ui.view">
+        <field name="name">cost.details.form</field>
+        <field name="model">cost.details</field>
+        <field name="arch" type="xml">
+            <form string="Cost Details" create="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="sequence" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="items"/>
+                            <field name="lead_id" string="Project Name"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="created_by"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Materials">
+                            <group>
+                                <field name="material_subtotal"/>
+                            </group>
+                            <field name="material_cost_ids" context="{'default_item_type': 'materials'}">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('is_material', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="scrap" widget="percentage"/>
+                                    <field name="qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Tools">
+                            <group>
+                                <field name="tools_subtotal"/>
+                            </group>
+                            <field name="tools_cost_ids" context="{'default_item_type': 'tools'}">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('is_tools', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Labor">
+                            <group>
+                                <field name="labor_subtotal"/>
+                            </group>
+                            <field name="labor_cost_ids" context="{'default_item_type': 'labor'}">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('is_labor', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Delivery">
+                            <group>
+                                <field name="delivery_subtotal"/>
+                            </group>
+                            <field name="delivery_cost_ids" context="{'default_item_type': 'delivery'}">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('is_delivery', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <group>
+                        <field name="notes" widget="html"/>
+                    </group>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cost_details_tree" model="ir.ui.view">
+        <field name="name">cost.details.tree</field>
+        <field name="model">cost.details</field>
+        <field name="arch" type="xml">
+            <list string="Cost Details" import="1">
+                <field name="sequence"/>
+                <field name="items"/>
+                <field name="lead_id" string="Project Name"/>
+                <field name="created_by"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cost_details" model="ir.actions.act_window">
+        <field name="name">Cost Details</field>
+        <field name="res_model">cost.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+</odoo>

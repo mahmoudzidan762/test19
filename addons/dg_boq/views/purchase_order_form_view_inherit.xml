@@ -1,0 +1,36 @@
+<odoo>
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form//sheet//field[@name='picking_type_id']" position="after">
+                <field name="lead_id" string="Project Name"/>
+            </xpath>
+
+            <xpath expr="//form//sheet//notebook" position="inside">
+                <page string="Financial Info">
+                    <group>
+                        <group string="Advanced Payments">
+                            <field name="advanced_payment_amount"/>
+                            <field name="advanced_payment_percentage" widget="percentage"/>
+                            <field name="advanced_payment_account_id"/>
+                        </group>
+                        <group string="Retentions">
+                            <field name="retention_percentage" widget="percentage"/>
+                            <field name="retention_account_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!--            remove add product, section, note and catalog from purchase order form view-->
+            <!--            <xpath expr="//form//sheet//notebook//field[@name='order_line']//list//control//create[@name='add_product_control']" position="replace"/>-->
+            <!--            <xpath expr="//form//sheet//notebook//field[@name='order_line']//list//control//create[@name='add_section_control']" position="replace"/>-->
+            <!--            <xpath expr="//form//sheet//notebook//field[@name='order_line']//list//control//create[@name='add_note_control']" position="replace"/>-->
+            <!--            <xpath expr="//form//sheet//notebook//field[@name='order_line']//list//control//button[@name='action_add_from_catalog']" position="replace"/>-->
+
+        </field>
+    </record>
+</odoo>

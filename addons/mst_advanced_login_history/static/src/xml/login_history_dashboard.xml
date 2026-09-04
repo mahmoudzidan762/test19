@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mst_advanced_login_history.AdvancedLoginHistoryDashboard">
+        <div class="mst_login_dashboard">
+
+            <!-- HEADER -->
+            <div class="mst_dashboard_header">
+                <div>
+                    <h1>Login History</h1>
+                    <p>Smart tracking. Better security. Full visibility.</p>
+                </div>
+
+                <button type="button"
+                        class="btn mst_refresh_btn"
+                        t-on-click="refreshDashboard">
+                    <i class="fa fa-refresh me-1"/>
+                    Refresh
+                </button>
+            </div>
+
+            <!-- LOADING -->
+            <t t-if="state.loading">
+                <div class="mst_dashboard_loading">
+                    <i class="fa fa-spinner fa-spin"/>
+                    Loading dashboard...
+                </div>
+            </t>
+
+            <t t-else="">
+
+                <!-- KPI CARDS -->
+                <div class="mst_dashboard_cards">
+                    <t t-foreach="state.cards" t-as="card" t-key="card.title">
+                        <div t-att-class="'mst_dashboard_card ' + card.class">
+                            <div class="mst_card_icon">
+                                <i t-att-class="'fa ' + card.icon"/>
+                            </div>
+                            <div>
+                                <span t-esc="card.title"/>
+                                <strong t-esc="card.value"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="mst_dashboard_body">
+
+                    <!-- RECENT LOGIN TABLE -->
+                    <div class="mst_dashboard_table_box">
+                        <div class="mst_section_title">
+                            <h3>Recent Login Activities</h3>
+                            <span>Successful login, logout and failed attempts</span>
+                        </div>
+
+                        <div class="mst_table_scroll">
+                            <table class="table mst_login_table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Login Time</th>
+                                        <th>Status</th>
+                                        <th>IP Address</th>
+                                        <th>Location</th>
+                                        <th>Browser / Device</th>
+                                        <th>Session Duration</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <t t-if="state.rows.length">
+                                        <t t-foreach="state.rows" t-as="row" t-key="row.id">
+                                            <tr class="mst_clickable_row"
+                                                t-on-click="() => this.openLoginRecord(row)">
+
+                                                <!-- USER -->
+                                                <td>
+                                                    <div class="mst_user_cell">
+                                                        <div class="mst_avatar">
+                                                            <i class="fa fa-user"/>
+                                                        </div>
+                                                        <div>
+                                                            <strong t-esc="row.user"/>
+                                                            <span t-esc="row.email"/>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <!-- LOGIN TIME -->
+                                                <td>
+                                                    <div class="mst_icon_text">
+                                                        <i class="fa fa-clock-o mst_text_icon purple"/>
+                                                        <span t-esc="row.login_time"/>
+                                                    </div>
+                                                </td>
+
+                                                <!-- STATUS -->
+                                                <td>
+                                                    <span t-att-class="'mst_status_badge ' + row.status_class">
+                                                        <i t-if="row.status_class == 'success'" class="fa fa-check-circle"/>
+                                                        <i t-if="row.status_class == 'failed'" class="fa fa-warning"/>
+                                                        <i t-if="row.status_class == 'logout'" class="fa fa-sign-out"/>
+                                                        <span t-esc="row.status"/>
+                                                    </span>
+                                                </td>
+
+                                                <!-- IP ADDRESS -->
+                                                <td>
+                                                    <div class="mst_icon_text">
+                                                        <i class="fa fa-globe mst_text_icon blue"/>
+                                                        <span t-esc="row.ip_address"/>
+                                                    </div>
+                                                </td>
+
+                                                <!-- LOCATION WITH COUNTRY FLAG -->
+                                                <td>
+                                                    <div class="mst_location_cell">
+                                                        <span class="mst_country_flag" t-esc="row.country_flag"/>
+                                                        <span t-esc="row.location"/>
+                                                    </div>
+                                                </td>
+
+                                                <!-- BROWSER AND OS -->
+                                                <td>
+                                                    <div class="mst_browser_cell">
+                                                        <i t-att-class="'fa ' + row.browser_icon + ' mst_browser_logo'"/>
+                                                        <span t-esc="row.browser_name"/>
+
+                                                        <i t-if="row.os_name"
+                                                           t-att-class="'fa ' + row.os_icon + ' mst_os_logo'"/>
+                                                        <span t-if="row.os_name" t-esc="row.os_name"/>
+                                                    </div>
+                                                </td>
+
+                                                <!-- SESSION DURATION -->
+                                                <td>
+                                                    <div class="mst_icon_text">
+                                                        <i class="fa fa-hourglass-half mst_text_icon orange"/>
+                                                        <span t-esc="row.session_duration"/>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </t>
+
+                                    <t t-else="">
+                                        <tr>
+                                            <td colspan="7" class="text-center text-muted py-4">
+                                                No login history found.
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SIDE PANEL -->
+                    <div class="mst_dashboard_side_box">
+
+                        <!-- LOGIN LOCATION -->
+                        <div class="mst_location_panel">
+                            <div class="mst_section_title">
+                                <h3>Login Location</h3>
+                                <span>Latest tracked location</span>
+                            </div>
+
+                            <t t-if="state.location.map_embed_url">
+                                <iframe t-att-src="state.location.map_embed_url"
+                                        class="mst_map_iframe"
+                                        loading="lazy">
+                                </iframe>
+                            </t>
+
+                            <t t-else="">
+                                <div class="mst_empty_map">
+                                    <i class="fa fa-map-marker"/>
+                                    <span>No location available</span>
+                                </div>
+                            </t>
+
+                            <div class="mst_location_details">
+                                <div>
+                                    <span>
+                                        <i class="fa fa-map-marker"/>
+                                        Location
+                                    </span>
+                                    <strong>
+                                        <span t-esc="state.location.country_flag"/>
+                                        <span t-esc="state.location.location"/>
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        <i class="fa fa-globe"/>
+                                        IP Address
+                                    </span>
+                                    <strong t-esc="state.location.ip_address"/>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        <i class="fa fa-desktop"/>
+                                        Browser / Device
+                                    </span>
+                                    <strong>
+                                        <i t-att-class="'fa ' + state.location.browser_icon + ' mst_side_browser_icon'"/>
+                                        <span t-esc="state.location.browser_name"/>
+                                        <i t-if="state.location.os_name"
+                                           t-att-class="'fa ' + state.location.os_icon + ' mst_side_os_icon'"/>
+                                        <span t-if="state.location.os_name" t-esc="state.location.os_name"/>
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <span>
+                                        <i class="fa fa-clock-o"/>
+                                        First Seen
+                                    </span>
+                                    <strong t-esc="state.location.login_time"/>
+                                </div>
+                            </div>
+
+                            <button t-if="state.location.open_url"
+                                    type="button"
+                                    class="btn mst_open_map_btn"
+                                    t-on-click="openMap">
+                                <i class="fa fa-map-marker me-1"/>
+                                Open Map
+                            </button>
+                        </div>
+
+                        <!-- RECENT ACTIVITY -->
+                        <div class="mst_recent_panel">
+                            <div class="mst_section_title">
+                                <h3>Recent Activity</h3>
+                                <span>Latest security events</span>
+                            </div>
+
+                            <div class="mst_recent_scroll">
+                                <t t-if="state.recent_activity.length">
+                                    <t t-foreach="state.recent_activity" t-as="activity" t-key="activity.id">
+                                        <div t-att-class="'mst_recent_item ' + activity.status_class"
+                                             t-on-click="() => this.openLoginRecord(activity)">
+
+                                            <div class="mst_recent_icon">
+                                                <i t-if="activity.status_class == 'success'" class="fa fa-check"/>
+                                                <i t-if="activity.status_class == 'failed'" class="fa fa-warning"/>
+                                                <i t-if="activity.status_class == 'logout'" class="fa fa-sign-out"/>
+                                            </div>
+
+                                            <div>
+                                                <strong t-esc="activity.status"/>
+                                                <span t-esc="activity.login_time"/>
+                                                <small>
+                                                    <span t-esc="activity.country_flag"/>
+                                                    <span t-esc="activity.location"/>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </t>
+
+                                <t t-else="">
+                                    <div class="mst_recent_empty">
+                                        No recent activity found.
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_simplify_access_management_root"
+                  name="Access Management"
+                  sequence="90"
+                  groups="simplify_access_management.group_access_management_manager"/>
+
+        <menuitem id="menu_simplify_access_rule"
+                  name="Access Rules"
+                  parent="menu_simplify_access_management_root"
+                  action="action_simplify_access_rule"
+                  sequence="10"
+                  groups="simplify_access_management.group_access_management_manager"/>
+
+    </data>
+</odoo>

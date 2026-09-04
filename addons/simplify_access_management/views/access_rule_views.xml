@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ==================== FORM VIEW ==================== -->
+        <record id="view_simplify_access_rule_form" model="ir.ui.view">
+            <field name="name">simplify.access.rule.form</field>
+            <field name="model">simplify.access.rule</field>
+            <field name="arch" type="xml">
+                <form string="Access Rule">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                                invisible="active"/>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Sales Team - Restricted Access"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="General">
+                                <field name="active" widget="boolean_toggle"/>
+                                <field name="sequence"/>
+                            </group>
+                            <group string="Companies">
+                                <field name="apply_all_companies"/>
+                                <field name="company_ids"
+                                       widget="many2many_tags"
+                                       invisible="apply_all_companies"
+                                       required="not apply_all_companies"
+                                       placeholder="Select one or more companies..."/>
+                            </group>
+                        </group>
+                        <group string="Users">
+                            <field name="user_ids"
+                                   widget="many2many_tags"
+                                   nolabel="1"
+                                   colspan="2"
+                                   placeholder="Select the users this rule applies to..."/>
+                        </group>
+                        <notebook>
+                            <page string="Model Access" name="model_access">
+                                <field name="model_ids">
+                                    <list editable="bottom">
+                                        <field name="model_id" required="1"/>
+                                        <field name="readonly"/>
+                                        <field name="restrict_create"/>
+                                        <field name="restrict_write"/>
+                                        <field name="restrict_unlink"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Menus" name="menus">
+                                <field name="menu_ids">
+                                    <list editable="bottom">
+                                        <field name="menu_id" required="1"/>
+                                        <field name="menu_name"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Fields" name="fields">
+                                <field name="field_ids">
+                                    <list editable="bottom">
+                                        <field name="model_id" required="1"/>
+                                        <field name="field_id"
+                                               required="1"
+                                               domain="[('model_id', '=', model_id)]"/>
+                                        <field name="invisible"/>
+                                        <field name="readonly"/>
+                                        <field name="required"/>
+                                        <field name="remove_external_link"/>
+                                        <field name="hide_export"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Domain Access" name="domain_access">
+                                <field name="domain_ids">
+                                    <list>
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="name"/>
+                                        <field name="model_id"/>
+                                        <field name="domain_expression"/>
+                                        <field name="apply_read" string="Read"/>
+                                        <field name="apply_write" string="Write"/>
+                                        <field name="apply_unlink" string="Delete"/>
+                                        <field name="apply_create" string="Create"/>
+                                        <field name="active" widget="boolean_toggle"/>
+                                    </list>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="model_id"/>
+                                                </group>
+                                                <group>
+                                                    <field name="active" widget="boolean_toggle"/>
+                                                    <field name="sequence"/>
+                                                </group>
+                                            </group>
+                                            <group string="Applies To">
+                                                <field name="apply_read"/>
+                                                <field name="apply_write"/>
+                                                <field name="apply_unlink"/>
+                                                <field name="apply_create"/>
+                                            </group>
+                                            <group string="Domain">
+                                                <field name="domain_expression"
+                                                       nolabel="1"
+                                                       placeholder="[('user_id', '=', user.id)]"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Buttons &amp; Tabs" name="buttons_tabs">
+                                <group string="Hidden Buttons">
+                                    <div class="mb-2">
+                                        <button name="action_open_button_picker" type="object"
+                                                string="Discover Buttons from a View..."
+                                                class="btn-secondary" icon="fa-search"
+                                                invisible="not id"/>
+                                        <p class="text-muted mb-0" invisible="id">
+                                            Save the Access Rule first to discover buttons
+                                            from a real view instead of typing technical
+                                            names manually.
+                                        </p>
+                                    </div>
+                                    <field name="button_ids" nolabel="1">
+                                        <list editable="bottom">
+                                            <field name="model_id" required="1"/>
+                                            <field name="view_id" domain="[('model', '=', model_name)]"/>
+                                            <field name="button_name" required="1"/>
+                                            <field name="button_type"/>
+                                            <field name="description"/>
+                                            <field name="active" widget="boolean_toggle"/>
+                                        </list>
+                                    </field>
+                                </group>
+                                <group string="Hidden Tabs">
+                                    <div class="mb-2">
+                                        <button name="action_open_tab_picker" type="object"
+                                                string="Discover Tabs from a View..."
+                                                class="btn-secondary" icon="fa-search"
+                                                invisible="not id"/>
+                                        <p class="text-muted mb-0" invisible="id">
+                                            Save the Access Rule first to discover tabs from
+                                            a real view instead of typing technical names
+                                            manually.
+                                        </p>
+                                    </div>
+                                    <field name="tab_ids" nolabel="1">
+                                        <list editable="bottom">
+                                            <field name="model_id" required="1"/>
+                                            <field name="view_id" domain="[('model', '=', model_name)]"/>
+                                            <field name="page_name" required="1"/>
+                                            <field name="page_string"/>
+                                            <field name="active" widget="boolean_toggle"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Views" name="views">
+                                <field name="view_ids" nolabel="1">
+                                    <list editable="bottom">
+                                        <field name="model_id" required="1"/>
+                                        <field name="view_id" domain="[('model', '=', model_name)]"/>
+                                        <field name="view_type"/>
+                                        <field name="active" widget="boolean_toggle"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Actions &amp; Reports" name="actions_reports">
+                                <group string="Hidden Actions">
+                                    <field name="action_ids" nolabel="1">
+                                        <list editable="bottom">
+                                            <field name="action_type" required="1"/>
+                                            <field name="act_window_id"
+                                                   invisible="action_type != 'act_window'"
+                                                   required="action_type == 'act_window'"/>
+                                            <field name="server_action_id"
+                                                   invisible="action_type != 'server'"
+                                                   required="action_type == 'server'"/>
+                                            <field name="client_action_id"
+                                                   invisible="action_type != 'client'"
+                                                   required="action_type == 'client'"/>
+                                            <field name="name"/>
+                                            <field name="active" widget="boolean_toggle"/>
+                                        </list>
+                                    </field>
+                                </group>
+                                <group string="Hidden / Restricted Reports">
+                                    <field name="report_ids" nolabel="1">
+                                        <list editable="bottom">
+                                            <field name="report_id" required="1"/>
+                                            <field name="model_name"/>
+                                            <field name="report_name"/>
+                                            <field name="active" widget="boolean_toggle"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Global Access" name="global_access">
+                                <group string="Data Access">
+                                    <field name="global_readonly"/>
+                                    <field name="hide_import"/>
+                                    <field name="hide_export"/>
+                                    <field name="hide_archive"/>
+                                    <field name="hide_unarchive"/>
+                                    <field name="hide_duplicate"/>
+                                </group>
+                                <group string="Session &amp; Login">
+                                    <field name="disable_login"/>
+                                    <field name="disable_developer_mode"/>
+                                </group>
+                                <group string="Module Management">
+                                    <field name="restrict_module_install"/>
+                                    <field name="restrict_module_upgrade"/>
+                                    <field name="restrict_module_uninstall"/>
+                                </group>
+                            </page>
+                            <page string="Chatter" name="chatter">
+                                <group>
+                                    <field name="hide_chatter"/>
+                                    <field name="disable_send_message"
+                                           invisible="hide_chatter"/>
+                                    <field name="disable_log_note"
+                                           invisible="hide_chatter"/>
+                                    <field name="disable_activities"
+                                           invisible="hide_chatter"/>
+                                </group>
+                            </page>
+                            <page string="Notes" name="notes_page">
+                                <field name="notes" nolabel="1"
+                                       placeholder="Internal notes about this rule..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- ==================== LIST VIEW ==================== -->
+        <record id="view_simplify_access_rule_list" model="ir.ui.view">
+            <field name="name">simplify.access.rule.list</field>
+            <field name="model">simplify.access.rule</field>
+            <field name="arch" type="xml">
+                <list string="Access Rules">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="user_ids" widget="many2many_tags" optional="show"/>
+                    <field name="apply_all_companies"/>
+                    <field name="company_ids" widget="many2many_tags" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- ==================== SEARCH VIEW ==================== -->
+        <record id="view_simplify_access_rule_search" model="ir.ui.view">
+            <field name="name">simplify.access.rule.search</field>
+            <field name="model">simplify.access.rule</field>
+            <field name="arch" type="xml">
+                <search string="Search Access Rules">
+                    <field name="name"/>
+                    <field name="user_ids"/>
+                    <field name="company_ids"/>
+                    <filter string="Active" name="filter_active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="filter_archived" domain="[('active', '=', False)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- ==================== ACTION ==================== -->
+        <record id="action_simplify_access_rule" model="ir.actions.act_window">
+            <field name="name">Access Rules</field>
+            <field name="res_model">simplify.access.rule</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_simplify_access_rule_search"/>
+            <field name="context">{'search_default_filter_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Access Rule
+                </p>
+                <p>
+                    Access Rules define, per user and per company, which
+                    restrictions the Simplify Access Management engine will
+                    apply. Restriction enforcement is added in later
+                    development phases.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

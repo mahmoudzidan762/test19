@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FIELD TRACKER CONFIG — Form View
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="view_field_tracker_config_form" model="ir.ui.view">
+        <field name="name">field.tracker.config.form</field>
+        <field name="model">field.tracker.config</field>
+        <field name="arch" type="xml">
+            <form string="Auto Field Tracker">
+                <header>
+                    <button name="action_test_tracking"
+                            string="🧪 Test Tracking"
+                            type="object"
+                            class="btn-secondary"/>
+                    <button name="action_view_logs"
+                            string="📋 View Change Logs"
+                            type="object"
+                            class="btn-primary"
+                            />
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_logs"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-history"
+                           >
+                            <field name="log_count" widget="statinfo" string="Log Entries"/>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon"
+                            title="Inactive"
+                            bg_color="bg-danger"
+                            invisible="active"
+                            />
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1" placeholder="Auto-generated"/>
+                        </h1>
+                    </div>
+
+                    <!-- ── Model Selection ────────────────────────── -->
+                    <group>
+                        <group string="🎯 Target Model">
+                            <field name="model_id"
+                                   options="{'no_create': True}"
+                                   placeholder="e.g. sale.order, res.partner …"/>
+                            <field name="model_name" invisible="1"/>
+                            <field name="model_has_chatter"
+                                   widget="boolean_toggle"
+                                   readonly="1"/>
+                            <field name="active" widget="boolean_toggle"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group string="⚙️ Logging Options">
+                            <field name="log_on_create" widget="boolean_toggle"/>
+                            <field name="log_on_write"  widget="boolean_toggle"/>
+                            <field name="log_on_unlink" widget="boolean_toggle"/>
+                            <field name="notify_followers" widget="boolean_toggle"/>
+                        </group>
+                    </group>
+
+                    <!-- ── Field Selection ────────────────────────── -->
+                    <notebook>
+                        <page string="📌 Fields to Track" name="fields_page">
+                            <group>
+                                <field name="track_all_fields" widget="boolean_toggle"/>
+                            </group>
+                            <field name="field_ids"
+                                   widget="many2many_tags"
+                                   placeholder="Select fields to track…"/>
+                            <div
+                                 invisible="not track_all_fields"
+                                 class="alert alert-info" role="alert">
+                                <strong>ℹ️ Track All Fields is ON.</strong>
+                                All storable fields on this model
+                                will be automatically tracked.
+                                Read-only computed, One2many, Many2many, and binary fields are excluded.
+                            </div>
+                            <div
+                                 invisible="model_has_chatter"
+                                 class="alert alert-warning" role="alert">
+                                <strong>⚠️ Chatter Not Detected.</strong>
+                                This model may not inherit <code>mail.thread</code>.
+                                Changes will still be logged in the database,
+                                but chatter messages will not appear on records.
+                            </div>
+                        </page>
+
+                        <page string="🔗 One2many Line Tracking" name="o2m_page">
+                            <group>
+                                <field name="track_o2m_lines" widget="boolean_toggle"/>
+                            </group>
+                            <field name="o2m_field_ids"
+                                   widget="many2many_tags"
+                                   
+                                   options="{'no_create': True}"
+                                   placeholder="Select One2many fields whose lines should be tracked…"/>
+                            <div 
+                                 class="alert alert-info" role="alert">
+                                <strong>ℹ️ One2many tracking</strong>
+                                logs changes to child line records
+                                directly in the parent record's chatter.
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FIELD TRACKER CONFIG — List View
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="view_field_tracker_config_list" model="ir.ui.view">
+        <field name="name">field.tracker.config.list</field>
+        <field name="model">field.tracker.config</field>
+        <field name="arch" type="xml">
+            <list string="Auto Field Trackers" decoration-muted="active == False">
+                <field name="sequence" widget="handle"/>
+                <field name="active"   widget="boolean_toggle"/>
+                <field name="model_id"/>
+                <field name="model_name"/>
+                <field name="track_all_fields"/>
+                <field name="log_on_create"/>
+                <field name="log_on_write"/>
+                <field name="log_on_unlink"/>
+                <field name="notify_followers"/>
+                <field name="log_count" string="Log Entries"/>
+                <button name="action_view_logs"
+                        string="Logs"
+                        type="object"
+                        icon="fa-history"
+                        />
+            </list>
+        </field>
+    </record>
+
+    <!-- ══════════════════════════════════════════════════════════
+         FIELD TRACKER CONFIG — Search View
+    ══════════════════════════════════════════════════════════════ -->
+   <!--  <record id="view_field_tracker_config_search" model="ir.ui.view">
+        <field name="name">field.tracker.config.search</field>
+        <field name="model">field.tracker.config</field>
+        <field name="arch" type="xml">
+            <search string="Search Tracker Configs">
+                <field name="model_id"/>
+                <field name="model_name"/>
+                <filter string="Active"   name="active"   domain="[('active','=',True)]"/>
+                <filter string="Inactive" name="inactive" domain="[('active','=',False)]"/>
+                <filter string="Track All Fields" name="track_all"
+                        domain="[('track_all_fields','=',True)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Model" name="group_model"
+                            context="{'group_by': 'model_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record> -->
+
+    <!-- ══════════════════════════════════════════════════════════
+         ACTION + MENU
+    ══════════════════════════════════════════════════════════════ -->
+    <record id="action_field_tracker_config" model="ir.actions.act_window">
+        <field name="name">Field Tracker Configs</field>
+        <field name="res_model">field.tracker.config</field>
+        <field name="view_mode">list,form</field>
+<!--         <field name="context">{'search_default_active': 1}</field>
+ -->        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No trackers configured yet!
+            </p>
+            <p>
+                Create a new Auto Field Tracker to start logging
+                field changes for any model in your Odoo database.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_field_tracker_root"
+              name="Field Tracker"
+              sequence="80"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_field_tracker_config"
+              name="Tracker Configurations"
+              parent="menu_field_tracker_root"
+              action="action_field_tracker_config"
+              sequence="10"
+              groups="base.group_system"/>
+
+</odoo>

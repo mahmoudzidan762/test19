@@ -1,0 +1,152 @@
+<odoo>
+
+    <record id="view_boq_sub_item_form" model="ir.ui.view">
+        <field name="name">boq.sub.item.form</field>
+        <field name="model">boq.sub.item</field>
+        <field name="arch" type="xml">
+            <form string="Sub Item" create="false">
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,awaiting_approval,in_progress,done,cancel"/>
+                    <button name="action_submit" type="object" string="Submit" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"/>
+                    <button name="action_create_material_requisitions" type="object" string="Material Requisitions"
+                            class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+                        <button name="action_open_material_requisitions"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart">
+                            <field name="material_requisition_count" widget="statinfo" class="o_stat_info"/>
+                        </button>
+
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="sequence" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="boq_id"/>
+                            <field name="billed_progress" widget="percent"/>
+                            <field name="onsite_progress" widget="percent"/>
+                            <field name="item"/>
+                            <field name="lead_id" readonly="1" string="Project Name"/>
+                        </group>
+                        <group>
+                            <field name="master_qty"/>
+                            <field name="new_qty"/>
+                            <field name="unit_price"/>
+                            <field name="total_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Materials">
+                            <field name="material_cost_ids" context="{'default_item_type': 'materials'}">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('is_material', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="new_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                    <field name="scrap" widget="percentage"/>
+                                    <field name="prev_pur"/>
+                                    <field name="curr_pur"/>
+                                    <field name="unit_est_price"/>
+                                    <field name="unit_pur_price"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Tools">
+                            <field name="tools_cost_ids" context="{'default_item_type': 'tools'}">
+                                <list editable="bottom">
+                                    <field name="product_id" domain="[('is_tools', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="new_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                    <field name="prev_pur"/>
+                                    <field name="curr_pur"/>
+                                    <field name="unit_est_price"/>
+                                    <field name="unit_pur_price"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Labor">
+                            <field name="labor_cost_ids" readonly="1">
+                                <list>
+                                    <field name="product_id" domain="[('is_labor', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="new_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                    <field name="prev_pur"/>
+                                    <field name="curr_pur"/>
+                                    <field name="unit_est_price"/>
+                                    <field name="unit_pur_price"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Delivery">
+                            <field name="delivery_cost_ids" readonly="1">
+                                <list>
+                                    <field name="product_id" domain="[('is_delivery', '=', True)]"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="new_qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="cost_center_id"/>
+                                    <field name="total_cost"/>
+                                    <field name="prev_pur"/>
+                                    <field name="curr_pur"/>
+                                    <field name="unit_est_price"/>
+                                    <field name="unit_pur_price"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_boq_sub_item_tree" model="ir.ui.view">
+        <field name="name">boq.sub.item.tree</field>
+        <field name="model">boq.sub.item</field>
+        <field name="arch" type="xml">
+            <list string="Bill Of Quantity Sub Item" import="1">
+                <field name="sequence"/>
+                <field name="lead_id" string="Project Name"/>
+                <field name="item"/>
+                <field name="billed_progress"/>
+                <field name="onsite_progress"/>
+                <field name="master_qty"/>
+                <field name="new_qty"/>
+                <field name="unit_price"/>
+                <field name="total_price"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_boq_sub_item" model="ir.actions.act_window">
+        <field name="name">Bill Of Quantity Sub Item</field>
+        <field name="res_model">boq.sub.item</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

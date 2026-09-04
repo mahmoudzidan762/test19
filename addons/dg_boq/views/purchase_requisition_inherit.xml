@@ -1,0 +1,32 @@
+<odoo>
+    <record id="purchase_requisition_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.requisition.form.inherit</field>
+        <field name="model">purchase.requisition</field>
+        <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form//sheet//notebook//page[1]//field[@name='qty_ordered']" position="after">
+                <field name="residual_qty"/>
+            </xpath>
+
+            <xpath expr="//form//sheet//notebook//page[1]//field[@name='price_unit']" position="after">
+                <field name="total_price"/>
+            </xpath>
+
+            <xpath expr="//form//header//button[1]" position="attributes">
+                <attribute name="string">Release Sub PC</attribute>
+                <attribute name="invisible">state != 'confirmed' or residual_is_zero == True</attribute>
+                <attribute name="context">
+                    {'default_currency_id': currency_id,
+                    'default_user_id': user_id,
+                    'default_lead_id': lead_id}
+                </attribute>
+            </xpath>
+
+            <xpath expr="//form//sheet//group//field[@name='requisition_type']" position="after">
+                <field name="lead_id" readonly="1" string="Project Name"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

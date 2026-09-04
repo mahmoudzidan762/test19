@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="reject_wizard_form" model="ir.ui.view">
+            <field name="name">reject.wizard.form</field>
+            <field name="model">reject.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reason Of Rejection">
+                    <group>
+                        <field name="reason_for_rejection"/>
+                    </group>
+                    <footer>
+                        <button string="reject" type="object" name="action_rejection" class="btn-primary"/>
+                        <button string="Cancel" name="action_cancel" type="object" class="btn-primary"
+                                special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="reject_generate_wizard" model="ir.actions.act_window">
+            <field name="name">Rejection</field>
+            <field name="res_model">reject.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="reject_wizard_form"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="cr_material_purchase_requisitions.model_material_purchase_requisition"/>
+            <field name="binding_view_types">form</field>
+
+        </record>
+    </data>
+</odoo>

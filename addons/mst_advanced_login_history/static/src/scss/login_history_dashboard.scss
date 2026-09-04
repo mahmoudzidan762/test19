@@ -1,0 +1,622 @@
+.mst_login_dashboard {
+    padding: 24px;
+    background: #f7f3fb;
+    min-height: 100%;
+    color: #1f2937;
+
+    .mst_dashboard_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(157deg, #f1005f, #3b98dd);
+        border-radius: 18px;
+        padding: 26px 30px;
+        margin-bottom: 22px;
+        color: #ffffff !important;
+        box-shadow: 0 14px 34px rgba(80, 34, 110, 0.22);
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 900;
+            color: #ffffff !important;
+        }
+
+        p {
+            margin: 7px 0 0;
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff !important;
+            opacity: 0.95;
+        }
+
+        .mst_refresh_btn {
+            background: #ffffff !important;
+            color: #f1005f !important;
+            border: 1px solid rgba(255, 255, 255, 0.8) !important;
+            font-weight: 800;
+            border-radius: 12px;
+            padding: 10px 18px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+
+            i {
+                color: #f1005f !important;
+            }
+
+            &:hover {
+                background: #f1005f !important;
+                color: #ffffff !important;
+
+                i {
+                    color: #ffffff !important;
+                }
+            }
+        }
+    }
+
+    .mst_dashboard_loading {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 42px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+
+        i {
+            margin-right: 8px;
+            color: #7c2aa8;
+        }
+    }
+
+    .mst_dashboard_cards {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .mst_dashboard_card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        border: 1px solid #eee8f4;
+
+        .mst_card_icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        span {
+            display: block;
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        strong {
+            display: block;
+            color: #111827;
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-top: 4px;
+        }
+
+        &.primary .mst_card_icon {
+            background: #5b5ce2;
+        }
+
+        &.success .mst_card_icon {
+            background: #22a447;
+        }
+
+        &.danger .mst_card_icon {
+            background: #ef4444;
+        }
+
+        &.purple .mst_card_icon {
+            background: #7431a8;
+        }
+    }
+
+    .mst_dashboard_body {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 18px;
+        align-items: start;
+    }
+
+    .mst_dashboard_table_box,
+    .mst_dashboard_side_box > div {
+        background: #ffffff;
+        border-radius: 18px;
+        border: 1px solid #eee8f4;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    }
+
+    .mst_dashboard_table_box {
+        overflow: hidden;
+    }
+
+    .mst_section_title {
+        padding: 18px 20px 12px;
+
+        h3 {
+            margin: 0;
+            color: #1f2937;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        span {
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 600;
+        }
+    }
+
+    .mst_table_scroll {
+        width: 100%;
+        max-height: 550px;
+        overflow-y: auto;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f3edf8;
+            border-radius: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #b85bcf;
+            border-radius: 8px;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: #8c2fab;
+        }
+    }
+
+    .mst_login_table {
+        margin-bottom: 0;
+        min-width: 1180px;
+
+        thead {
+            background: #faf7fd;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+
+            th {
+                border: 0;
+                color: #6b7280;
+                font-size: 12px;
+                font-weight: 900;
+                padding: 13px 14px;
+                white-space: nowrap;
+                background: #faf7fd;
+            }
+        }
+
+        tbody {
+            td {
+                vertical-align: middle;
+                padding: 13px 14px;
+                color: #374151;
+                font-size: 13px;
+                border-top: 1px solid #f0edf4;
+                white-space: nowrap;
+            }
+
+            tr:hover {
+                background: #fcf8ff;
+            }
+        }
+
+        .mst_clickable_row {
+            cursor: pointer;
+
+            &:hover {
+                background: #f8edff !important;
+            }
+        }
+    }
+
+    .mst_user_cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .mst_avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c2aa8, #b84ee6);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        strong {
+            display: block;
+            color: #111827;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        span {
+            display: block;
+            color: #6b7280;
+            font-size: 11px;
+            max-width: 145px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .mst_icon_text,
+    .mst_location_cell,
+    .mst_browser_cell {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 260px;
+
+        span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .mst_country_flag {
+        font-size: 20px;
+        line-height: 1;
+        min-width: 24px;
+        display: inline-block;
+    }
+
+    .mst_browser_logo,
+    .mst_os_logo,
+    .mst_side_browser_icon,
+    .mst_side_os_icon {
+        font-size: 18px;
+        min-width: 20px;
+        text-align: center;
+        margin-right: 4px;
+    }
+
+    .mst_browser_logo.fa-chrome,
+    .mst_side_browser_icon.fa-chrome {
+        color: #4285f4;
+    }
+
+    .mst_browser_logo.fa-firefox,
+    .mst_side_browser_icon.fa-firefox {
+        color: #ff7139;
+    }
+
+    .mst_browser_logo.fa-edge,
+    .mst_side_browser_icon.fa-edge {
+        color: #0078d7;
+    }
+
+    .mst_browser_logo.fa-safari,
+    .mst_side_browser_icon.fa-safari {
+        color: #0b7ff3;
+    }
+
+    .mst_browser_logo.fa-opera,
+    .mst_side_browser_icon.fa-opera {
+        color: #ff1b2d;
+    }
+
+    .mst_browser_logo.fa-globe,
+    .mst_side_browser_icon.fa-globe {
+        color: #2563eb;
+    }
+
+    .mst_os_logo.fa-windows,
+    .mst_side_os_icon.fa-windows {
+        color: #0078d7;
+    }
+
+    .mst_os_logo.fa-linux,
+    .mst_side_os_icon.fa-linux {
+        color: #111827;
+    }
+
+    .mst_os_logo.fa-android,
+    .mst_side_os_icon.fa-android {
+        color: #3ddc84;
+    }
+
+    .mst_os_logo.fa-apple,
+    .mst_side_os_icon.fa-apple {
+        color: #111827;
+    }
+
+    .mst_os_logo.fa-desktop,
+    .mst_side_os_icon.fa-desktop {
+        color: #7431a8;
+    }
+
+    .mst_text_icon {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #ffffff;
+
+        &.purple {
+            background: #7431a8;
+        }
+
+        &.green {
+            background: #16a34a;
+        }
+
+        &.blue {
+            background: #2563eb;
+        }
+
+        &.orange {
+            background: #f59e0b;
+        }
+    }
+
+    .mst_status_badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 900;
+
+        &.success {
+            background: #e9f8ee;
+            color: #168034;
+        }
+
+        &.failed {
+            background: #ffecec;
+            color: #d52929;
+        }
+
+        &.logout {
+            background: #f0edff;
+            color: #5b3bc4;
+        }
+    }
+
+    .mst_dashboard_side_box {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .mst_map_iframe {
+        width: calc(100% - 40px);
+        height: 180px;
+        margin: 0 20px;
+        border: 0;
+        border-radius: 14px;
+        background: #f4f0f8;
+    }
+
+    .mst_empty_map {
+        height: 180px;
+        margin: 0 20px;
+        border-radius: 14px;
+        background: #f4f0f8;
+        color: #7c2aa8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-weight: 800;
+    }
+
+    .mst_location_details {
+        padding: 16px 20px 4px;
+
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f1edf5;
+            padding: 10px 0;
+            gap: 12px;
+        }
+
+        span {
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            i {
+                color: #7c2aa8;
+            }
+        }
+
+        strong {
+            color: #1f2937;
+            font-size: 12px;
+            text-align: right;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+    }
+
+    .mst_location_panel {
+        padding-bottom: 18px;
+
+        .mst_open_map_btn {
+            margin-left: 20px;
+            width: calc(100% - 40px) !important;
+            border-radius: 12px;
+            font-weight: 800;
+            color: #7c2aa8;
+            background: #ffffff;
+            border: 1px solid #7c2aa8;
+
+            &:hover {
+                color: #ffffff;
+                background: #7c2aa8;
+            }
+        }
+    }
+
+    .mst_recent_panel {
+        padding-bottom: 12px;
+        max-height: 330px;
+        overflow: hidden;
+    }
+
+    .mst_recent_scroll {
+        max-height: 250px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #f3edf8;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: #b85bcf;
+            border-radius: 8px;
+        }
+    }
+
+    .mst_recent_item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 20px;
+        border-top: 1px solid #f1edf5;
+        cursor: pointer;
+
+        &:hover {
+            background: #f8edff;
+        }
+
+        .mst_recent_icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+
+        strong {
+            display: block;
+            font-size: 13px;
+            color: #1f2937;
+            font-weight: 900;
+        }
+
+        span {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        small {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #8b5aa8;
+        }
+
+        &.success .mst_recent_icon {
+            background: #22a447;
+        }
+
+        &.failed .mst_recent_icon {
+            background: #ef4444;
+        }
+
+        &.logout .mst_recent_icon {
+            background: #6d42c7;
+        }
+    }
+
+    .mst_recent_empty {
+        padding: 18px 20px;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+        border-top: 1px solid #f1edf5;
+    }
+}
+
+@media (max-width: 1200px) {
+    .mst_login_dashboard {
+        .mst_dashboard_cards {
+            grid-template-columns: repeat(2, minmax(180px, 1fr));
+        }
+
+        .mst_dashboard_body {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .mst_login_dashboard {
+        padding: 14px;
+
+        .mst_dashboard_header {
+            display: block;
+
+            .mst_refresh_btn {
+                margin-top: 14px;
+            }
+        }
+
+        .mst_dashboard_cards {
+            grid-template-columns: 1fr;
+        }
+
+        .mst_table_scroll {
+            max-height: 420px;
+        }
+    }
+}

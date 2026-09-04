@@ -1,0 +1,190 @@
+<odoo>
+    <record id="view_estimation_form" model="ir.ui.view">
+        <field name="name">estimation.form</field>
+        <field name="model">estimation</field>
+        <field name="arch" type="xml">
+            <form string="Estimation" create="false">
+                <header>
+                    <button name="action_prepare_estimation"
+                            string="Prepare Quotation"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_create_quotation"
+                            string="Create Quotation"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'estimation_prepared'"/>
+                    <button name="action_create_boq"
+                            string="Create Bill Of Quantity"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="state != 'contract'"/>
+                    <button name="action_reset_to_draft"
+                            string="Reset To Draft"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state in 'draft,boq_created'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,estimation_prepared,quotation_created,contract,boq_created"/>
+                </header>
+
+                <sheet>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_quotation"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-file-text-o">
+                            <div class="o_stat_info">
+                                <span class="o_stat_text">Quotations</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="lead_id" readonly="1" string="Project Name"/>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="st_date"/>
+                            <field name="end_date"/>
+                            <field name="date_duration" readonly="1"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+
+                        <page string="In-Direct Estimation">
+                            <group>
+                                <field name="total_indirect_estimation"/>
+                            </group>
+                            <field name="indirect_cost_line_ids">
+                                <list editable="bottom">
+                                    <field name="category_id" readonly="0"/>
+                                    <field name="product_id" domain="product_domain"/>
+                                    <field name="duration"/>
+                                    <field name="qty"/>
+                                    <field name="cost_price"/>
+                                    <field name="total"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="In-Direct Estimation Summary">
+                            <field name="indirect_cost_summary_line_ids" readonly="1">
+                                <list>
+                                    <field name="category_id"/>
+                                    <field name="total_per_category"/>
+                                    <field name="total_per_category_to_total_indirect" widget="percent"/>
+                                    <field name="total_per_category_to_total_direct" widget="percent"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Direct Cost">
+                            <group>
+                                <field name="total_direct_estimation"/>
+                            </group>
+                            <group>
+                                <group>
+                                    <group>
+                                        <field name="overhead"/>
+                                    </group>
+                                    <group>
+                                        <button name="action_apply_overhead" string="Apply" type="object"
+                                                class="oe_highlight"/>
+                                    </group>
+                                </group>
+                                <group></group>
+                            </group>
+                            <group>
+                                <group>
+                                    <group>
+                                        <field name="margin"/>
+                                    </group>
+                                    <group>
+                                        <button name="action_apply_margin" string="Apply" type="object"
+                                                class="oe_highlight"/>
+                                    </group>
+                                </group>
+                                <group></group>
+                            </group>
+                            <field name="direct_cost_line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" readonly="1"/>
+                                    <field name="items"/>
+                                    <field name="description"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="type_of_implement"/>
+                                    <field name="material" readonly="type_of_implement != 'inhouse'"/>
+                                    <field name="tools" readonly="type_of_implement != 'inhouse'"/>
+                                    <field name="labor" readonly="type_of_implement != 'inhouse'"/>
+                                    <field name="delivery" readonly="type_of_implement != 'inhouse'"/>
+                                    <field name="cost_unit" readonly="type_of_implement == 'inhouse'"/>
+                                    <field name="overhead" optional="hide" readonly="type_of_implement == 'running'"/>
+                                    <field name="margin" optional="hide" readonly="type_of_implement == 'running'"/>
+                                    <field name="total_cost_unit"/>
+                                    <field name="total_no_tax"/>
+                                    <field name="tax_ids" optional="hide"/>
+                                    <field name="final_total"/>
+                                    <button name="action_create_cost_details" string="Cost Details" type="object"
+                                            class="oe_highlight" invisible="type_of_implement != 'inhouse'"/>
+                                    <field name="notes" widget="html"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Quotation">
+                            <field name="quotation_line_ids" readonly="1">
+                                <list>
+                                    <field name="items"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="unit_price"/>
+                                    <field name="total_unit_price"/>
+                                    <field name="tax_ids"/>
+                                    <field name="total_price"/>
+                                </list>
+                            </field>
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </chatter>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_estimation_tree" model="ir.ui.view">
+        <field name="name">estimation.tree</field>
+        <field name="model">estimation</field>
+        <field name="arch" type="xml">
+            <list string="Estimation" import="1">
+                <field name="name" readonly="1"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_estimation" model="ir.actions.act_window">
+        <field name="name">Estimation</field>
+        <field name="res_model">estimation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+</odoo>

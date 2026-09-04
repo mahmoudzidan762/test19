@@ -1,0 +1,272 @@
+<odoo>
+
+    <record id="view_variation_order_form" model="ir.ui.view">
+        <field name="name">variation.order.form</field>
+        <field name="model">variation.order</field>
+        <field name="arch" type="xml">
+            <form string="Variation Order" create="false">
+                <header>
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,waiting_approval,updated,rejected,boq_updated"/>
+                    <button name="action_request_approval"
+                            type="object"
+                            string="Request Approval"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button name="action_approved"
+                            type="object"
+                            string="Approve"
+                            class="oe_highlight"
+                            invisible="state != 'waiting_approval'"/>
+                    <button name="action_rejected"
+                            type="object"
+                            string="Reject"
+                            class="oe_highlight"
+                            invisible="state != 'waiting_approval'"/>
+                    <button name="action_update_boq"
+                            type="object"
+                            string="Update Bill Of Quantity"
+                            class="oe_highlight"
+                            invisible="state != 'updated'"/>
+                    <button name="action_set_to_draft"
+                            type="object"
+                            string="Set To Draft"
+                            class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="boq_id" readonly="1"/>
+                            <field name="lead_id" readonly="1" string="Project Name"/>
+                            <field name="requested_by" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="st_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Detailed Bill Of Quantity Variance Quantities">
+                            <field name="boq_line_ids">
+                                <list editable="bottom">
+                                    <field name="items"/>
+                                    <field name="uom_id"/>
+                                    <field name="type_of_implement"/>
+                                    <field name="qty" string="Master QTY" readonly="1"/>
+                                    <field name="new_variation_qty"/>
+                                    <field name="margin"/>
+                                    <field name="overhead"/>
+                                    <field name="surplus_qty"/>
+                                    <field name="deficit_qty"/>
+                                    <field name="unit_price" string="Unit Price(Excl. VAT)"/>
+                                    <field name="total_contract_value" string="Total Contract Value(Excl. VAT)"/>
+                                    <field name="total_estimated_value" string="Total Estimated Value(Excl. VAT)"/>
+                                    <field name="surplus_value" string="Surplus Value(Excl. VAT)"/>
+                                    <field name="deficit_value" string="Deficit Value(Excl. VAT)"/>
+                                    <field name="notes"/>
+                                </list>
+                            </field>
+                            <!-- Summary Section -->
+                            <div class="o_vo_summary mt-4 pt-3" style="border-top: 1px solid rgba(255,255,255,0.1);">
+                                <h6 style="letter-spacing: 0.1em; font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; margin-bottom: 20px;">
+                                    Quantities Summary
+                                </h6>
+
+                                <div class="row g-4 mb-4">
+
+                                    <!-- Surplus & Deficit Card -->
+                                    <div class="col-6">
+                                        <div style="border-top: 2px solid rgba(255,255,255,0.15); padding-top: 12px;">
+                                            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 14px;">
+                                                Surplus &amp; Deficit Totals
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span style="font-size: 12px; color: #64748b;">Total Surplus (excl.
+                                                    VAT)
+                                                </span>
+                                                <span style="font-size: 13px; font-weight: 600; color: #4ade80;">
+                                                    <field name="total_surplus_excl_vat" readonly="1"/>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span style="font-size: 12px; color: #64748b;">Total Deficit (excl.
+                                                    VAT)
+                                                </span>
+                                                <span style="font-size: 13px; font-weight: 600; color: #f87171;">
+                                                    <field name="total_deficit_excl_vat" readonly="1"/>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span style="font-size: 12px; color: #64748b;">VAT on Surplus</span>
+                                                <span style="font-size: 13px; color: #94a3b8;">
+                                                    <field name="vat_on_surplus" widget="percentage"/>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <span style="font-size: 12px; color: #64748b;">VAT on Deficit</span>
+                                                <span style="font-size: 13px; color: #94a3b8;">
+                                                    <field name="vat_on_deficit" widget="percentage"/>
+                                                </span>
+                                            </div>
+
+                                            <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <span style="font-size: 12px; font-weight: 600; color: #cbd5e1;">
+                                                        Surplus (incl. VAT)
+                                                    </span>
+                                                    <span style="font-size: 14px; font-weight: 700; color: #4ade80;">
+                                                        <field name="total_surplus_incl_vat" readonly="1"/>
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span style="font-size: 12px; font-weight: 600; color: #cbd5e1;">
+                                                        Deficit (incl. VAT)
+                                                    </span>
+                                                    <span style="font-size: 14px; font-weight: 700; color: #f87171;">
+                                                        <field name="total_deficit_incl_vat" readonly="1"/>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Project Value Card -->
+                                    <div class="col-6">
+                                        <div style="border-top: 2px solid rgba(255,255,255,0.15); padding-top: 12px;">
+                                            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 14px;">
+                                                Project Value Breakdown
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span style="font-size: 12px; color: #64748b;">Original Contract Value
+                                                    (incl. VAT)
+                                                </span>
+                                                <span style="font-size: 13px; font-weight: 600; color: #cbd5e1;">
+                                                    <field name="original_contract_value" readonly="1"/>
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <span style="font-size: 12px; color: #64748b;">% of Contract</span>
+                                                <span style="font-size: 12px; color: #64748b;">100%</span>
+                                            </div>
+
+                                            <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px; margin-bottom: 10px;">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span style="font-size: 12px; color: #64748b;">Value after VO (incl.
+                                                        VAT)
+                                                    </span>
+                                                    <span style="font-size: 13px; font-weight: 600; color: #fb923c;">
+                                                        <field name="project_value_after_vo" readonly="1"/>
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span style="font-size: 12px; color: #64748b;">% of Contract</span>
+                                                    <span style="font-size: 12px; color: #64748b;">
+                                                        <field name="project_value_after_vo_pct" readonly="1"/>%
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <span style="font-size: 12px; font-weight: 600; color: #cbd5e1;">
+                                                        Total Saving (incl. VAT)
+                                                    </span>
+                                                    <span style="font-size: 14px; font-weight: 700; color: #4ade80;">
+                                                        <field name="total_saving" readonly="1"/>
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span style="font-size: 12px; color: #64748b;">% of Contract</span>
+                                                    <span style="font-size: 12px; font-weight: 600; color: #4ade80;">
+                                                        <field name="total_saving_pct" readonly="1"/>%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- KPI Pills Row -->
+                                <div class="row g-3">
+                                    <div class="col-4">
+                                        <div style="border-top: 2px solid rgba(165,180,252,0.4); padding-top: 12px; text-align: center;">
+                                            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 8px;">
+                                                Contract Value (incl. VAT)
+                                            </div>
+                                            <div style="font-size: 18px; font-weight: 700; color: #a5b4fc;">
+                                                <field name="original_contract_value" readonly="1"/>
+                                            </div>
+                                            <div style="font-size: 11px; color: #64748b; margin-top: 4px;">100%
+                                                baseline
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div style="border-top: 2px solid rgba(251,146,60,0.4); padding-top: 12px; text-align: center;">
+                                            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 8px;">
+                                                Value after VO
+                                            </div>
+                                            <div style="font-size: 18px; font-weight: 700; color: #fb923c;">
+                                                <field name="project_value_after_vo" readonly="1"/>
+                                            </div>
+                                            <div style="font-size: 11px; color: #64748b; margin-top: 4px;">
+                                                <field name="project_value_after_vo_pct" readonly="1"/>% of contract
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div style="border-top: 2px solid rgba(74,222,128,0.4); padding-top: 12px; text-align: center;">
+                                            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #64748b; margin-bottom: 8px;">
+                                                Total Saving
+                                            </div>
+                                            <div style="font-size: 18px; font-weight: 700; color: #4ade80;">
+                                                <field name="total_saving" readonly="1"/>
+                                            </div>
+                                            <div style="font-size: 11px; color: #4ade80; margin-top: 4px;">
+                                                <field name="total_saving_pct" readonly="1"/>% saved
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_variation_order_tree" model="ir.ui.view">
+        <field name="name">variation.order.tree</field>
+        <field name="model">variation.order</field>
+        <field name="arch" type="xml">
+            <list string="Variation Order" import="1" create="false">
+                <field name="name"/>
+                <field name="lead_id" string="Project Name"/>
+                <field name="requested_by"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_variation_order" model="ir.actions.act_window">
+        <field name="name">Variation Order</field>
+        <field name="res_model">variation.order</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

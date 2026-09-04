@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+
+        <menuitem
+                id="menu_dg_boq_root"
+                name="Bill Of Quantity"
+                sequence="3"
+                parent="dg_construction.menu_dg_construction_root"
+        />
+
+        <menuitem
+                id="menu_action_boq"
+                name="Bill Of Quantity"
+                action="dg_boq.action_boq"
+                sequence="1"
+                parent="dg_boq.menu_dg_boq_root"
+        />
+
+        <menuitem
+                id="menu_action_variation_order"
+                name="Variation Order"
+                action="dg_boq.action_variation_order"
+                sequence="2"
+                parent="dg_boq.menu_dg_boq_root"
+        />
+
+        <menuitem
+                id="menu_action_sub_item"
+                name="Bill Of Quantity Sub Items"
+                action="dg_boq.action_boq_sub_item"
+                sequence="3"
+                parent="dg_boq.menu_dg_boq_root"
+        />
+
+        <menuitem
+                id="menu_action_subcontractor_request"
+                name="Sub Contractor Request"
+                action="dg_boq.action_boq_line"
+                sequence="5"
+                parent="dg_boq.menu_dg_boq_root"
+        />
+
+        <menuitem
+                id="menu_action_ipc_certificate"
+                name="IPC Certificate"
+                action="dg_boq.action_ipc"
+                sequence="6"
+                parent="dg_boq.menu_dg_boq_root"
+        />
+
+    </data>
+</odoo>

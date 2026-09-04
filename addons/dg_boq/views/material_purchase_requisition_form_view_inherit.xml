@@ -1,0 +1,14 @@
+<odoo>
+    <record id="material_purchase_requisition_form_inherit" model="ir.ui.view">
+        <field name="name">material.purchase.requisition.form.inherit</field>
+        <field name="model">material.purchase.requisition</field>
+        <field name="inherit_id" ref="cr_material_purchase_requisitions.material_purchase_requisition_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet//field[@name='journal_id']" position="after">
+                <field name="lead_id" readonly="1" string="Project Name"/>
+                <field name="sequence" readonly="1" string="Item Number"/>
+                <field name="item" readonly="1" string="Item Name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

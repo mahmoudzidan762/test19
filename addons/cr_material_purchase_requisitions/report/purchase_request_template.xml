@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_purchase_requisition_id">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            .page {
+                            font-family: Arial, sans-serif;
+                            font-size: 20px;
+                            margin: 20px;
+                            }
+                            .table {
+                            border-collapse: collapse;
+                            width: 100%;
+                            }
+                            .table th, .table td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                            }
+                            .table th {
+                            }
+                            h1, h2 {
+                            text-align: center;
+                            margin-bottom: 10px;
+                            }
+                            h1 {
+                            font-size: 30px;
+                            }
+                            h2 {
+                            font-size: 30px;
+                            }
+                        </style>
+                        <h1 style="text-align:center;">Material Purchase Requisition
+                            <t t-esc="o.name"/>
+                            -
+                            <t t-esc="o.state"/>
+                        </h1>
+                        <br/>
+                        <table class="table table-condensed" style="width:100%;border-collapse:collapse;">
+                            <br/>
+                            <tr>
+                                <th style="width:20%;">Employee</th>
+                                <td style="width:40%;">
+                                    <t t-esc="o.employee_id.name"/>
+                                </td>
+                                <th style="width:20%;">Department</th>
+                                <td style="width:40%;">
+                                    <t t-esc="o.department_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Requisition Date</th>
+                                <td>
+                                    <t t-esc="o.requisition_date"/>
+                                </td>
+                                <th>Requisition Owner</th>
+                                <td>
+                                    <t t-esc="o.requisition_responsible.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Requisition Received</th>
+                                <td>
+                                    <t t-esc="o.received_date"/>
+                                </td>
+                                <th>Requisition Expiration Date</th>
+                                <td>
+                                    <t t-esc="o.requisition_deadline"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:20%;">Company</th>
+                                <td style="width:30%;">
+                                    <t t-esc="o.company_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <h2 style="text-align:center;">Other Information</h2>
+                        <br/>
+                        <table class="table table-condensed" style="width:100%;border-collapse:collapse;">
+                            <tr>
+                                <th style="width:20%;">Confirmation Person</th>
+                                <td style="width:40%;">
+                                    <t t-esc="o.confirmed_by_id.name"/>
+                                </td>
+                                <th style="width:20%;">Confirmed Date</th>
+                                <td style="width:40%;">
+                                    <t t-esc="o.confirmed_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Department Head</th>
+                                <td>
+                                    <t t-esc="o.department_manager_id.name"/>
+                                </td>
+                                <th>Department Approval Date</th>
+                                <td>
+                                    <t t-esc="o.department_approval_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Approval Authority</th>
+                                <td>
+                                    <t t-esc="o.approved_id.name"/>
+                                </td>
+                                <th>Approved Date</th>
+                                <td>
+                                    <t t-esc="o.approved_date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Rejection Authority</th>
+                                <td>
+                                    <t t-esc="o.rejected_id.name"/>
+                                </td>
+                                <th>Rejected Date</th>
+                                <td>
+                                    <t t-esc="o.rejected_date"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <h2 style="text-align:center;">Picking Information</h2>
+                        <br/>
+                        <table class="table table-condensed" style="width:100%;border-collapse:collapse;">
+                            <tr>
+                                <th style="width:20%;">Picking Type</th>
+                                <td style="width:40%;">
+                                    <t t-esc="o.picking_type_id.name"/>
+                                </td>
+                                <th style="width:20%;">Source Location</th>
+                                <td style="width:40%;">
+                                    <t t-esc="o.source_location_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="width:20%;">Destination Location</th>
+                                <td style="width:30%;">
+                                    <t t-esc="o.destination_location_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <h2 style="text-align:center;">Requisition Items</h2>
+                        <table class="table table-condensed" style="width:100%;border-collapse:collapse;">
+                            <br/>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Requisition Type</th>
+                                    <th class="text-center">Product</th>
+                                    <th class="text-center">Description</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Unit of Measure</th>
+                                    <th class="text-center">Vendors</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.requisition_lines" t-as="line">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="line.request_action"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line.description"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line.quantity"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="line.unit_of_measure.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="', '.join(line.vendor_ids.mapped('name'))"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="width:100%;margin:20px;font-size: 20px;font-family: Arial, sans-serif;display:flex;justify-content: space-between;">
+                        <strong>Employee Signature:</strong>
+                        <span style="margin: 170px;"></span>
+                        <strong>Date:</strong>
+                    </div>
+                    <div style="width:100%;margin:20px;font-size: 20px;font-family: Arial, sans-serif;display:flex;justify-content: space-between;">
+                        <strong>Department Manager Signature:</strong>
+                        <span style="margin: 117px;"></span>
+                        <strong>Date:</strong>
+                    </div>
+                    <div style="width:100%;margin:20px;font-size: 20px;font-family: Arial, sans-serif;display:flex;justify-content: space-between;">
+                        <strong>Approver Signature:</strong>
+                        <span style="margin: 173px;"></span>
+                        <strong>Date:</strong>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

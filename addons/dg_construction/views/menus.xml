@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+
+        <menuitem
+                id="menu_dg_construction_root"
+                name="Construction"
+                sequence="1"
+                web_icon="dg_construction,static/description/icon.png"
+        />
+
+    </data>
+</odoo>

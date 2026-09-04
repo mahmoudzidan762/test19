@@ -1,0 +1,334 @@
+<odoo>
+    <data>
+
+        <!-- FORM VIEW -->
+        <record id="view_bid_file_form" model="ir.ui.view">
+            <field name="name">bid.file.form</field>
+            <field name="model">bid.file</field>
+            <field name="arch" type="xml">
+                <form string="Bid File" create="false">
+
+                    <!-- STATUS BAR -->
+                    <header>
+                        <button name="action_request_for_approval" string="Request For Approval" type="object"
+                                class="oe_highlight" invisible="state != 'submitted'"/>
+                        <button name="action_payment_request" string="Payment Request" type="object"
+                                class="oe_highlight" invisible="state != 'request_for_approval' or can_approve != True"
+                                groups="dg_construction.group_dg_top_management"/>
+                        <button name="action_reject_for_approval" string="Reject" type="object"
+                                class="oe_highlight" invisible="state != 'request_for_approval' or can_approve != True"
+                                groups="dg_construction.group_dg_top_management"/>
+                        <button name="action_create_estimation" string="Estimation" type="object"
+                                class="oe_highlight" invisible="state != 'paid'"/>
+                        <button name="action_create_initial_guarantee" string="Initial Guarantee" type="object"
+                                class="oe_highlight" invisible="state not in ('estimated', 'paid')"/>
+                        <button name="action_create_final_guarantee" string="Final Guarantee" type="object"
+                                class="oe_highlight" invisible="state != 'project'"/>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="submitted,request_for_approval,paid,estimated,project,rejected"/>
+                    </header>
+
+                    <sheet>
+
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_estimation"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-tasks">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">
+                                        Estimation
+                                    </span>
+                                </div>
+                            </button>
+                            <button name="action_open_payments"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-money">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">
+                                        Payments
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <!-- ================= Customer INFO ================= -->
+                            <group string="Customer Information" col="2">
+                                <field name="customer_id" readonly="1"/>
+                                <field name="lead_id" readonly="1" string="Project Name"/>
+                                <field name="customer_responsible_person_id"/>
+                                <field name="phone"/>
+                                <field name="mobile"/>
+                                <field name="email"/>
+                            </group>
+
+                            <!-- ================= PROJECT ADVISOR ================= -->
+                            <group string="Bid Manager" col="2">
+                                <field name="advisor_id" placeholder="Select an Employee..."/>
+                                <field name="advisor_phone"/>
+                                <field name="advisor_email"/>
+                                <field name="advisor_address_id" context="{'show_address': 1}"
+                                       options="{&quot;highlight_first_line&quot;: True}"/>
+                            </group>
+
+                        </group>
+
+                        <!-- ================= PROJECT GENERAL INFO ================= -->
+                        <group string="Bid General Information" col="2">
+
+                            <group>
+                                <field name="contracting_party"/>
+                                <field name="contracting_agreement"/>
+                                <field name="contract_term_type"/>
+                            </group>
+
+                            <group>
+                                <field name="contract_type" placeholder="Select..."/>
+                                <field name="surveying_method" placeholder="Enter The Method..."/>
+                            </group>
+
+                        </group>
+
+                        <notebook>
+
+                            <!-- Assay -->
+                            <page string="Bid Description">
+                                <field name="bid_description" widget="html" placeholder="Add a description..."/>
+                            </page>
+
+                            <!-- Bid Info -->
+                            <page string="Bid Info">
+                                <group>
+                                    <group>
+                                        <field name="bid_name" string="Bid Name"/>
+                                        <field name="bid_code" string="Bid Code"/>
+                                        <field name="bid_booklet_fee"/>
+                                        <field name="scope_type"/>
+                                        <field name="contractor_id" invisible="scope_type != 'operation_maintenance' "/>
+                                        <field name="last_date_to_submit" placeholder="Enter the Date..."/>
+                                        <field name="opening_bid_date" placeholder="Enter the Date..."/>
+                                        <field name="site_inspection_date" placeholder="Enter the Date..."/>
+                                    </group>
+                                    <group>
+                                        <field name="start_date" placeholder="Enter the Date..."/>
+                                        <field name="end_date" placeholder="Enter the Date..."/>
+                                        <field name="project_duration" readonly="1"/>
+                                        <field name="lead_source" placeholder="Enter the Source..."/>
+                                        <field name="street" placeholder="Street..." class="o_address_street"
+                                               string="Bid Location"/>
+                                        <field name="street2" placeholder="Street 2..." class="o_address_street"
+                                               string=""/>
+                                        <field name="city" placeholder="City" class="o_address_city" string=""/>
+                                        <field name="bid_link" widget="url" placeholder="Link..."/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <!-- Bid Financial Info -->
+                            <page string=" Bid Financial Info">
+                                <group col="2">
+                                    <group>
+                                        <field name="tender_booklet_value" string="Bid Booklet Fee"/>
+                                        <field name="bid_estimated_value"/>
+                                        <field name="bank_guarantee_percent" widget="percentage"
+                                               string="Initial Bank Guarantee %"/>
+                                        <field name="bank_guarantee_value" string="Initial Bank Guarantee value"
+                                               readonly="1"/>
+                                        <field name="final_bank_guarantee_percent" widget="percentage"
+                                               string="Final Bank Guarantee %"/>
+                                        <field name="final_bank_guarantee_value" string="Final Bank Guarantee value"
+                                               readonly="1"/>
+                                        <field name="mobilization_value" string="Mobilization Budget"/>
+                                        <field name="bid_assets_value" string="Bid Assets Value"/>
+                                        <field name="bid_operation_estimation" string="Bid Operation Estimation"/>
+                                        <field name="bid_capex_value" string="Bid CAPEX Value" readonly="1"/>
+                                        <!--                                    <field name="tender_booklet_pay_date" placeholder="Enter the Date..."/>-->
+                                        <!--                                    <field name="bid_capital_budget"/>-->
+                                        <!--                                    <field name="bank_guarantee_date" placeholder="Enter the Date..."/>-->
+                                    </group>
+                                    <group>
+                                        <field name="capex_investment_duration"/>
+                                        <field name="bid_inhouse_percent" widget="percentage" string="Bid Inhouse %"/>
+                                        <field name="bid_inhouse_value" readonly="1"/>
+                                        <field name="bid_subcontractor_percent" widget="percentage"
+                                               string="Bid Sub-contract %"/>
+                                        <field name="bid_subcontractor_value" readonly="1"
+                                               string="Bid Sub-contract Value"/>
+                                        <!--                                    <field name="mobilization_percent" widget="percentage" readonly="1"/>-->
+                                        <field name="risk_percent" widget="percentage" string="Risk %"/>
+                                        <field name="risk_value" readonly="1"/>
+                                        <field name="retention_percent" widget="percentage" string="Retention %"/>
+                                        <field name="retention_value" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <!-- Bid Tech Info -->
+                            <!--                        <page string="Bid Tech Information">-->
+                            <!--                            <group col="2">-->
+                            <!--                                <group>-->
+                            <!--                                    <field name="drawing_receiving_date" placeholder="Enter the Date..."/>-->
+                            <!--                                    <field name="site_receiving_date" placeholder="Enter the Date..."/>-->
+                            <!--                                    <field name="other_attachment" widget="html" placeholder="Upload..."/>-->
+                            <!--                                    <field name="contract_attachment" widget="html" placeholder="Upload..."/>-->
+                            <!--                                </group>-->
+                            <!--                                <group>-->
+                            <!--                                    <field name="site_prepare_start" placeholder="Enter the Date..."/>-->
+                            <!--                                    <field name="site_delivering_date" placeholder="Enter the Date..."/>-->
+                            <!--                                    <field name="actual_start" placeholder="Enter the Date..."/>-->
+                            <!--                                </group>-->
+                            <!--                            </group>-->
+                            <!--                        </page>-->
+
+                            <!-- Client Standing -->
+                            <page string="Client Standing">
+                                <group col="2">
+                                    <group>
+                                        <field name="client_type" placeholder="Enter the Type..."/>
+                                        <field name="payment_reputation" placeholder="Select..."/>
+                                        <field name="funding_source" placeholder="Select..."/>
+                                        <field name="financial_extract_duration" placeholder="Select..."/>
+                                    </group>
+                                    <group>
+                                        <field name="payment_cycle" placeholder="Select..."/>
+                                        <field name="advance_payment_percent" widget="percentage"
+                                               placeholder="Enter the %..."/>
+                                        <field name="payment_terms_type" placeholder="Select..."/>
+                                        <field name="recommendation" placeholder="Your Recommendations....?"/>
+                                    </group>
+                                </group>
+                            </page>
+
+
+                            <!-- Rules -->
+                            <!--                            <page string="Rules">-->
+
+                            <!--                                <group string='Project Customer Deduction'>-->
+                            <!--                                    <field name="customer_deduction_ids">-->
+                            <!--                                        <list editable="bottom">-->
+                            <!--                                            <field name="name"/>-->
+                            <!--                                            <field name="product_id"/>-->
+                            <!--                                            <field name="deduction_type"/>-->
+                            <!--                                            <field name="value"/>-->
+                            <!--                                        </list>-->
+                            <!--                                    </field>-->
+
+                            <!--                                    <group>-->
+                            <!--                                        <group>-->
+                            <!--                                            <field name="down_payment_customer_type"/>-->
+                            <!--                                        </group>-->
+                            <!--                                        <group>-->
+                            <!--                                            <field name="down_payment_customer_value" nolabel='1'/>-->
+                            <!--                                        </group>-->
+                            <!--                                    </group>-->
+
+                            <!--                                </group>-->
+
+                            <!--                                <group string='Project Subcontractor Deduction'>-->
+                            <!--                                    <field name="subcontract_deduction_ids">-->
+                            <!--                                        <list editable="bottom">-->
+                            <!--                                            <field name="name"/>-->
+                            <!--                                            <field name="product_id"/>-->
+                            <!--                                            <field name="deduction_type"/>-->
+                            <!--                                            <field name="value"/>-->
+                            <!--                                        </list>-->
+                            <!--                                    </field>-->
+
+                            <!--                                    <group>-->
+                            <!--                                        <group>-->
+                            <!--                                            <field name="down_payment_subcontract_type"/>-->
+                            <!--                                        </group>-->
+                            <!--                                        <group>-->
+                            <!--                                            <field name="down_payment_subcontract_value" nolabel='1'/>-->
+                            <!--                                        </group>-->
+                            <!--                                    </group>-->
+
+                            <!--                                </group>-->
+
+                            <!--                            </page>-->
+
+                            <!-- Addition -->
+                            <!--                            <page string="Addition">-->
+                            <!--                                <group>-->
+
+                            <!--                                </group>-->
+
+                            <!--                                <group>-->
+                            <!--                                    <field name="subcontract_addition_ids">-->
+                            <!--                                        <list editable="bottom">-->
+                            <!--                                            <field name="tax_id"/>-->
+                            <!--                                            <field name="amount"/>-->
+                            <!--                                        </list>-->
+                            <!--                                    </field>-->
+                            <!--                                </group>-->
+                            <!--                            </page>-->
+
+                            <!-- Pricing -->
+                            <!--                            <page string="Project Pricing">-->
+                            <!--                                <group>-->
+                            <!--                                    <group>-->
+                            <!--                                        <field name="vat"/>-->
+                            <!--                                        <field name="risks"/>-->
+                            <!--                                    </group>-->
+                            <!--                                    <group>-->
+                            <!--                                        <field name="additional_expenses"/>-->
+                            <!--                                        <field name="margin"/>-->
+                            <!--                                    </group>-->
+                            <!--                                </group>-->
+                            <!--                            </page>-->
+
+                            <!-- Document Priority -->
+                            <!--                            <page string="Document Priority">-->
+                            <!--                                <group>-->
+                            <!--                                    <field name="document_priority"/>-->
+                            <!--                                </group>-->
+                            <!--                            </page>-->
+
+                        </notebook>
+
+                    </sheet>
+                    <chatter>
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </chatter>
+                </form>
+            </field>
+        </record>
+
+        <!-- TREE VIEW -->
+        <record id="view_bid_file_tree" model="ir.ui.view">
+            <field name="name">bid.file.tree</field>
+            <field name="model">bid.file</field>
+            <field name="arch" type="xml">
+                <list string="Bid File" import="1">
+                    <field name="name" readonly="1"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_bid_file" model="ir.actions.act_window">
+            <field name="name">Bid File</field>
+            <field name="res_model">bid.file</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem
+                id="menu_action_bid_file"
+                name="Tender"
+                action="dg_tender.action_bid_file"
+                sequence="1"
+                parent="dg_construction.menu_dg_construction_root"
+        />
+    </data>
+
+</odoo>

@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+
+        <menuitem
+                id="menu_dg_estimation_root"
+                name="Estimation"
+                sequence="2"
+                parent="dg_construction.menu_dg_construction_root"
+        />
+
+        <menuitem
+                id="menu_action_estimation"
+                name="Estimations"
+                action="dg_estimation.action_estimation"
+                sequence="1"
+                parent="dg_estimation.menu_dg_estimation_root"
+        />
+
+        <menuitem
+                id="menu_action_cost_details"
+                name="Cost Details"
+                action="dg_estimation.action_cost_details"
+                sequence="2"
+                parent="dg_estimation.menu_dg_estimation_root"
+        />
+
+    </data>
+</odoo>

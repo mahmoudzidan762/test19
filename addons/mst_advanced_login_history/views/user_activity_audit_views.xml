@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_mst_user_activity_log_list" model="ir.ui.view">
+        <field name="name">mst.user.activity.log.list</field>
+        <field name="model">mst.user.activity.log</field>
+        <field name="arch" type="xml">
+            <list string="Advanced Logs" create="0" edit="0" delete="0">
+                <field name="performed_date"/>
+                <field name="user_id"/>
+                <field name="session_id"/>
+                <field name="action_type"/>
+                <field name="module_name"/>
+                <field name="model_log_enabled"/>
+                <field name="model_config_id"/>
+                <field name="model_description"/>
+                <field name="model_name"/>
+                <field name="record_id"/>
+                <field name="name"/>
+                <field name="has_changes"/>
+                <field name="has_view_changes"/>
+                <field name="ip_address"/>
+                <field name="browser"/>
+                <field name="operating_system"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_mst_user_activity_log_form" model="ir.ui.view">
+        <field name="name">mst.user.activity.log.form</field>
+        <field name="model">mst.user.activity.log</field>
+        <field name="arch" type="xml">
+            <form string="Advanced Logs" create="0" edit="0" delete="0">
+                <header>
+                    <button name="action_open_record"
+                            type="object"
+                            string="Open Record"
+                            class="btn-primary"
+                            invisible="not model_name or not record_id"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="model_description"/>
+                            <field name="model_name"/>
+                            <field name="module_name"/>
+                            <field name="model_log_enabled"/>
+                            <field name="model_config_id"/>
+                            <field name="record_id"/>
+                            <field name="action_type"/>
+                        </group>
+
+                        <group>
+                            <field name="user_id"/>
+                            <field name="login"/>
+                            <field name="session_id"/>
+                            <field name="performed_date"/>
+                            <field name="has_changes"/>
+                            <field name="has_view_changes"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Device Details">
+                            <field name="ip_address"/>
+                            <field name="browser"/>
+                            <field name="operating_system"/>
+                        </group>
+
+                        <group string="Request Details">
+                            <field name="request_url"/>
+                            <field name="request_method"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Changes">
+                            <field name="line_ids" nolabel="1">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="field_label"/>
+                                    <field name="field_name"/>
+                                    <field name="old_value"/>
+                                    <field name="new_value"/>
+                                    <field name="is_view_field"/>
+                                </list>
+                            </field>
+                        </page>
+
+                        <page string="Changes Views">
+                            <field name="line_ids"
+                                   nolabel="1"
+                                   domain="[('is_view_field','=',True)]">
+                                <list create="0" edit="0" delete="0">
+                                    <field name="field_label"/>
+                                    <field name="field_name"/>
+                                    <field name="old_value"/>
+                                    <field name="new_value"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_mst_user_activity_log_search" model="ir.ui.view">
+    <field name="name">mst.user.activity.log.search</field>
+    <field name="model">mst.user.activity.log</field>
+    <field name="arch" type="xml">
+        <search string="Advanced Logs">
+
+            <!-- Searchable Fields -->
+            <field name="user_id"/>
+            <field name="login"/>
+            <field name="session_id"/>
+            <field name="action_type"/>
+            <field name="module_name"/>
+            <field name="model_config_id"/>
+            <field name="model_description"/>
+            <field name="model_name"/>
+            <field name="record_id"/>
+            <field name="name"/>
+            <field name="ip_address"/>
+
+            <separator/>
+
+            <!-- Filters -->
+            <filter name="filter_create"
+                    string="Created"
+                    domain="[('action_type', '=', 'create')]"/>
+
+            <filter name="filter_modify"
+                    string="Modified"
+                    domain="[('action_type', '=', 'modify')]"/>
+
+            <filter name="filter_delete"
+                    string="Deleted"
+                    domain="[('action_type', '=', 'delete')]"/>
+
+            <separator/>
+
+            <filter name="filter_model_logs"
+                    string="Configured Model Logs"
+                    domain="[('model_log_enabled', '=', True)]"/>
+
+            <filter name="filter_view_changes"
+                    string="View Changes"
+                    domain="[('has_view_changes', '=', True)]"/>
+
+            <separator/>
+
+            <!-- Group By -->
+            <group name="group_by">
+
+                <filter name="group_user"
+                        string="User"
+                        context="{'group_by': 'user_id'}"/>
+
+                <filter name="group_action"
+                        string="Action"
+                        context="{'group_by': 'action_type'}"/>
+
+                <filter name="group_module"
+                        string="Module"
+                        context="{'group_by': 'module_name'}"/>
+
+                <filter name="group_model"
+                        string="Model"
+                        context="{'group_by': 'model_description'}"/>
+
+                <filter name="group_session"
+                        string="Session"
+                        context="{'group_by': 'session_id'}"/>
+
+                <filter name="group_date"
+                        string="Date"
+                        context="{'group_by': 'performed_date:day'}"/>
+
+            </group>
+
+        </search>
+    </field>
+</record>
+
+    <record id="action_mst_user_activity_log" model="ir.actions.act_window">
+        <field name="name">Advanced Logs</field>
+        <field name="res_model">mst.user.activity.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_mst_user_activity_log_search"/>
+    </record>
+
+    
+    <record id="action_mst_configured_model_activity_log" model="ir.actions.act_window">
+        <field name="name">Model Logs</field>
+        <field name="res_model">mst.user.activity.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_mst_user_activity_log_search"/>
+        <field name="domain">[('model_log_enabled','=',True)]</field>
+        <field name="context">{'search_default_group_model': 1}</field>
+    </record>
+
+   
+
+    <!-- <record id="view_users_form_activity_audit_inherit" model="ir.ui.view">
+        <field name="name">res.users.form.activity.audit.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button name="action_kill_all_sessions"
+                        type="object"
+                        string="Kill All Sessions"
+                        class="btn-danger"
+                        groups="base.group_system"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+
+                <page string="Sessions" groups="base.group_system">
+                    <field name="login_history_ids" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="login_time"/>
+                            <field name="logout_time"/>
+                            <field name="duration"/>
+                            <field name="ip_address"/>
+                            <field name="browser"/>
+                            <field name="operating_system"/>
+                            <field name="city"/>
+                            <field name="country"/>
+                            <field name="session_id"/>
+                            <field name="status"/>
+                        </list>
+                    </field>
+                </page>
+
+                <page string="Advanced Logs" groups="base.group_system">
+                    <field name="activity_log_ids" readonly="1">
+                        <list create="0" edit="0" delete="0">
+                            <field name="performed_date"/>
+                            <field name="session_id"/>
+                            <field name="action_type"/>
+                            <field name="module_name"/>
+                            <field name="model_log_enabled"/>
+                            <field name="model_config_id"/>
+                            <field name="model_description"/>
+                            <field name="model_name"/>
+                            <field name="record_id"/>
+                            <field name="name"/>
+                            <field name="has_changes"/>
+                            <field name="has_view_changes"/>
+                        </list>
+                    </field>
+                </page>
+
+            </xpath>
+
+        </field>
+    </record> -->
+
+</odoo>

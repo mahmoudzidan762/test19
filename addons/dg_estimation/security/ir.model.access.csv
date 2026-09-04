@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_estimation,access_estimation,model_estimation,,1,1,1,1
+access_direct_cost_line,access_direct_cost_line,model_direct_cost_line,,1,1,1,1
+access_indirect_cost_line,access_indirect_cost_line,model_indirect_cost_line,,1,1,1,1
+access_indirect_cost_summary_line,access_indirect_cost_summary_line,model_indirect_cost_summary_line,,1,1,1,1
+access_cost_details,access_cost_details,model_cost_details,,1,1,1,1
+access_quotation_line,access_quotation_line,model_quotation_line,,1,1,1,1
+access_product_template,access_product_template,model_product_template,,1,1,1,1
+access_sale_order,access_sale_order,model_sale_order,,1,1,1,1
+access_cost_details_line,access_cost_details_line,model_cost_details_line,,1,1,1,1
+

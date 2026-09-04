@@ -1,0 +1,170 @@
+<odoo>
+
+    <record id="view_boq_form" model="ir.ui.view">
+        <field name="name">boq.form</field>
+        <field name="model">bill.of.quantity</field>
+        <field name="arch" type="xml">
+            <form string="Bill of Quantity" create="false">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="in_progress,done,cancel"/>
+                    <!--                    <button name="action_in_progress" type="object" string="In Progress" class="oe_highlight"/>-->
+                    <button name="action_request_variation_order" type="object" string="Request variation order"
+                            class="oe_highlight"/>
+                    <button name="action_create_ipc" type="object" string="Payment Certificate" class="oe_highlight"/>
+                    <button name="action_done" type="object" string="Done" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+                        <button name="action_open_payments"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-credit-card">
+                            <field name="payment_count" widget="statinfo" class="o_stat_info"/>
+                        </button>
+
+                        <button name="action_open_variation_orders"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o">
+                            <field name="variation_count" widget="statinfo" class="o_stat_info"/>
+                        </button>
+
+                        <button name="action_open_purchase_requisitions"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-shopping-cart">
+                            <field name="po_count" widget="statinfo" class="o_stat_info"/>
+                        </button>
+
+                    </div>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="lead_id" string="Project Name"/>
+                            <field name="partner_id"/>
+                            <field name="project_manager_id"/>
+                            <field name="billed_progress" string="Billing Progress %" widget="percentage"/>
+                            <field name="onsite_progress" widget="percentage"/>
+                        </group>
+                        <group>
+                            <field name="st_date" readonly="1"/>
+                            <field name="end_date"/>
+                            <field name="date_duration" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Main Items">
+                            <field name="boq_line_ids">
+                                <list create="false" edit="false" delete="false" no_open="true">
+                                    <field name="sequence" readonly="1"/>
+                                    <field name="items"/>
+                                    <field name="name"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                    <field name="new_variation_qty" readonly="1"/>
+                                    <field name="type_of_implement"/>
+                                    <field name="unit_price"/>
+                                    <field name="margin"/>
+                                    <field name="overhead"/>
+                                    <field name="total_previous" readonly="1"/>
+                                    <field name="billed_progress" widget="percentage"/>
+                                    <field name="onsite_amount"/>
+                                    <field name="onsite_progress" widget="percentage"/>
+                                    <button name="action_view_sub_items" type="object" string="View Sub Items"
+                                            class="oe_highlight" invisible="type_of_implement != 'inhouse'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Accounting">
+                            <group>
+                                <group string="Retention Tax">
+                                    <field name="retention_percent" widget="percentage"/>
+                                    <field name="retention_journal_id"/>
+                                </group>
+                                <group string="Advanced Payment">
+                                    <field name="advanced_payment_journal_id"/>
+                                    <field name="advanced_payment_percent" widget="percentage" readonly="1"/>
+                                    <field name="advanced_payment_amount"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_boq_tree" model="ir.ui.view">
+        <field name="name">boq.tree</field>
+        <field name="model">bill.of.quantity</field>
+        <field name="arch" type="xml">
+            <list string="Bill of Quantity" import="1">
+                <field name="name" readonly="1"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_boq_line_tree" model="ir.ui.view">
+        <field name="name">boq.line.tree</field>
+        <field name="model">bill.of.quantity.line</field>
+        <field name="arch" type="xml">
+            <list string="Bill of Quantity Lines" create="false">
+                <header>
+                    <button name="action_add"
+                            type="object"
+                            string="Add to IPC"
+                            class="btn-primary"
+                            invisible="not from_button"
+                    />
+                    <button name="action_request_subcontractor"
+                            type="object"
+                            string="Request Subcontractor"
+                            class="btn-primary"
+                            invisible="from_button"
+                    />
+                </header>
+                <field name="sequence" readonly="1"/>
+                <field name="boq_id" readonly="1"/>
+                <field name="lead_id" readonly="1"/>
+                <field name="partner_id" readonly="1"/>
+                <field name="items" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="type_of_implement" readonly="1"/>
+                <field name="uom_id" readonly="1"/>
+                <field name="qty" readonly="1"/>
+                <field name="new_variation_qty" readonly="1"/>
+                <field name="total_previous" readonly="1"/>
+                <field name="remaining" readonly="1"/>
+                <field name="unit_price" readonly="1"/>
+                <field name="notes" readonly="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_boq" model="ir.actions.act_window">
+        <field name="name">Bill of Quantity</field>
+        <field name="res_model">bill.of.quantity</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_boq_line" model="ir.actions.act_window">
+        <field name="name">Bill Of Quantity Lines</field>
+        <field name="res_model">bill.of.quantity.line</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('type_of_implement','=','subcontractor'),('boq_id','!=',False)]</field>
+        <field name="context">{'from_button': False}</field>
+    </record>
+
+</odoo>

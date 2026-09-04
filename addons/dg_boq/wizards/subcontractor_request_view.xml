@@ -1,0 +1,21 @@
+<odoo>
+    <record id="subcontractor_request_wizard_form_view" model="ir.ui.view">
+        <field name="name">subcontractor.request.wizard.form.view</field>
+        <field name="model">subcontractor.request.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sub Contractor Request">
+                <group>
+                    <field name="request_type" widget="radio" options="{'horizontal': true}"/>
+                    <field name="requisition_id" invisible="request_type !=  'update'" string="Agreement"/>
+                    <field name="partner_id" invisible="request_type !=  'new'"/>
+                    <field name="date_start" invisible="request_type !=  'new'"/>
+                    <field name="date_end" invisible="request_type !=  'new'"/>
+                </group>
+                <footer>
+                    <button string="Create Request" type="object" name="create_request" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="material_purchase_requisition_tree_view" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.tree</field>
+            <field name="model">material.purchase.requisition</field>
+            <field name="arch" type="xml">
+                <list string="Material Purchase Requisitions" create="false">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="requisition_date"/>
+                    <field name="department_id" readonly="1"/>
+                    <field name="requisition_responsible"/>
+                    <field name="received_date"/>
+                    <field name="requisition_deadline"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="material_purchase_requisition_form_view" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.form</field>
+            <field name="model">material.purchase.requisition</field>
+            <field name="arch" type="xml">
+                <form string="Material Purchase Requisition">
+                    <header>
+
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"
+                                state="new" invisible=" state !=  'new'"/>
+
+                        <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" special="cancel"
+                                invisible=" state !=  'new'"/>
+
+                        <button name="action_dept_approve" string="CEO Approve" type="object"
+                                class="oe_highlight"
+                                groups="cr_material_purchase_requisitions.department_access"
+                                invisible="state not in ('new', 'waiting_department_approval')"/>
+
+                        <button name="action_reject" string="Reject" type="object" class="oe_highlight"
+                                groups="cr_material_purchase_requisitions.department_access,cr_material_purchase_requisitions.user_access"
+                                invisible="state in  ('purchase_order_created','received','new', 'rejected')"/>
+
+                        <button name="action_approve" string="Approve" type="object" class="oe_highlight"
+                                groups="cr_material_purchase_requisitions.user_access"
+                                invisible="state not in ('new','waiting_department_approval','waiting_ir_approval')"/>
+
+                        <button name="action_create_picking_and_po" string="Create Picking and PO" type="object"
+                                class="oe_highlight"
+                                groups="cr_material_purchase_requisitions.user_access"
+                                invisible="state not in 'approved'"/>
+
+                        <button name="action_received" string="Received" type="object" class="oe_highlight"
+                                groups="cr_material_purchase_requisitions.user_access"
+                                invisible="state not in  'purchase_order_created'"/>
+
+                        <button name="action_reset_to_draft" string="Reset To Draft" type="object" class="oe_highlight"
+                                groups="cr_material_purchase_requisitions.user_access"
+                                invisible="state not in 'received'"/>
+
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="new,waiting_department_approval,waiting_ir_approval,approved,purchase_order_created,received,rejected"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="view_internal_picking"
+                                    type="object"
+                                    string="Internal Picking"
+                                    class="oe_stat_button"
+                                    icon="fa-truck"
+                                    invisible="internal_transfer_count == 0 ">
+                                <field string="Internal Transfer" name="internal_transfer_count" widget="statinfo"/>
+                            </button>
+                            <button name="view_purchase_order"
+                                    type="object"
+                                    string="Purchase Order"
+                                    class="oe_stat_button"
+                                    icon="fa-book"
+                                    invisible="purchase_count == 0">
+                                <field string="Purchase Order" name="purchase_count" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+                                <field name="department_id"/>
+                                <field name="requisition_responsible"/>
+                                <field name="journal_id" domain="[('id', 'in', [26, 27, 28, 29, 31, 32, 33])]"/>
+                            </group>
+                            <group>
+                                <field name="requisition_date"/>
+                                <field name="received_date"/>
+                                <field name="requisition_deadline"/>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Requisition Lines">
+                                <field name="requisition_lines">
+                                    <list editable="bottom">
+                                        <field name="request_action"/>
+                                        <field name="product_id"/>
+                                        <field name="description"/>
+                                        <field name="quantity"/>
+                                        <field name="unit_price"/>
+                                        <field name="cost_center_id"/>
+                                        <field name="unit_of_measure"/>
+                                        <field name="vendor_ids" widget="many2many_tags"/>
+                                    </list>
+                                </field>
+                                <group>
+                                    <field name="total_amount" readonly="1"/>
+                                </group>
+                            </page>
+                            <page string="Picking Information">
+                                <group>
+                                    <group>
+                                        <field name="destination_location_id"/>
+                                        <field name="source_location_id"/>
+                                        <field name="picking_type_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Other Information">
+                                <group>
+                                    <group>
+                                        <field name="confirmed_by_id"/>
+                                        <field name="department_manager_id"/>
+                                        <field name="approved_id"/>
+                                        <field name="rejected_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="confirmed_date"/>
+                                        <field name="department_approval_date"/>
+                                        <field name="approved_date"/>
+                                        <field name="rejected_date"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                        <group>
+                            <field name="reason_for_requisition"/>
+                            <field name="reason_for_rejection"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="material_purchase_requisitions" model="ir.actions.act_window">
+            <field name="name">Material Purchase Requisitions</field>
+            <field name="res_model">material.purchase.requisition</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <menuitem id="menu_material_purchase_requisitions"
+                  name="Requisitions"
+                  sequence="10"
+                  action="material_purchase_requisitions"/>
+    </data>
+</odoo>

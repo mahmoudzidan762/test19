@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report Action -->
+    <record id="action_report_ipc" model="ir.actions.report">
+        <field name="name">Print IPC Certificate</field>
+        <field name="model">ipc.certificate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dg_boq.report_ipc_template</field>
+        <field name="report_file">dg_boq.report_ipc_template</field>
+        <field name="binding_model_id" ref="model_ipc_certificate"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Report Template -->
+    <template id="report_ipc_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <!-- Header -->
+                        <div style="border-bottom: 3px solid #2c3e50; margin-bottom: 24px; padding-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                <div>
+                                    <h1 style="margin: 0; font-size: 26px; color: #2c3e50; font-weight: 700;">
+                                        Initial Payment Certificate
+                                    </h1>
+                                    <h2 style="margin: 4px 0 0 0; font-size: 18px; color: #7f8c8d; font-weight: 400;">
+                                        <t t-esc="doc.name"/>
+                                    </h2>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span t-if="doc.state == 'draft'"
+                                          style="background: #95a5a6; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Draft
+                                    </span>
+                                    <span t-if="doc.state == 'confirmed'"
+                                          style="background: #f39c12; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Confirmed
+                                    </span>
+                                    <span t-if="doc.state == 'approved'"
+                                          style="background: #27ae60; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Approved
+                                    </span>
+                                    <span t-if="doc.state == 'invoiced'"
+                                          style="background: #2980b9; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Invoiced
+                                    </span>
+                                    <span t-if="doc.state == 'cancelled'"
+                                          style="background: #e74c3c; color: white; padding: 4px 14px; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                                        Cancelled
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Info Grid -->
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+
+                            <!-- Left column -->
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 6px; padding: 16px;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Project Details
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0; width: 45%;">Bill of Quantity</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.boq_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0; width: 45%;">Printed by User</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="env.user.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Project</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.lead_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Customer</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.partner_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Project Manager</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.project_manager_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Invoice Date</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.invoice_date or '—'"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Right column -->
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 6px; padding: 16px;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Timeline
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0; width: 45%;">Start Date</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.st_date or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">End Date</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.end_date or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Duration</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.date_duration or '—'"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 4px 0;">Analytic Account</td>
+                                        <td style="color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="doc.analytic_account_id.name or '—'"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- Work Items Table -->
+                        <h4 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Work Items
+                        </h4>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 24px;">
+                            <thead>
+                                <tr style="background: #2c3e50; color: white;">
+                                    <th style="padding: 9px 8px; text-align: left; font-weight: 600;">Item</th>
+                                    <th style="padding: 9px 8px; text-align: left; font-weight: 600;">UOM</th>
+                                    <th style="padding: 9px 8px; text-align: center; font-weight: 600;">Master QTY</th>
+                                    <th style="padding: 9px 8px; text-align: center; font-weight: 600;">New QTY</th>
+                                    <th style="padding: 9px 8px; text-align: center; font-weight: 600;">Total Previous</th>
+                                    <th style="padding: 9px 8px; text-align: center; font-weight: 600;">Total Current</th>
+                                    <th style="padding: 9px 8px; text-align: center; font-weight: 600;">Total Accumulative</th>
+                                    <th style="padding: 9px 8px; text-align: center; font-weight: 600;">Remaining</th>
+                                    <th style="padding: 9px 8px; text-align: right; font-weight: 600;">Unit Price</th>
+                                    <th style="padding: 9px 8px; text-align: right; font-weight: 600;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.line_ids" t-as="line">
+                                    <tr t-attf-style="background: {{ '#ffffff' if line_index % 2 == 0 else '#f8f9fa' }};">
+                                        <td style="padding: 7px 8px; color: #2c3e50; font-weight: 500;">
+                                            <t t-esc="line.items or '—'"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; color: #555;">
+                                            <t t-esc="line.uom_id.name or '—'"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.qty or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.new_variation_qty or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.total_previous or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.total_current or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.total_cumulative or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: center; color: #555;">
+                                            <t t-esc="'%.2f' % (line.remaining or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: right; color: #555;">
+                                            <t t-esc="'%.2f' % (line.unit_price or 0)"/>
+                                        </td>
+                                        <td style="padding: 7px 8px; text-align: right; color: #2c3e50; font-weight: 600;">
+                                            <t t-esc="'%.2f' % (line.ipc_total or 0)"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr t-if="not doc.line_ids">
+                                    <td colspan="10" style="padding: 16px; text-align: center; color: #aaa; font-style: italic;">
+                                        No work items found.
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- Gross Work Value -->
+                            <tfoot>
+                                <tr style="background: #2c3e50; color: white;">
+                                    <td colspan="9" style="padding: 9px 8px; text-align: right; font-weight: 600; font-size: 12px;">
+                                        Gross Work Value
+                                    </td>
+                                    <td style="padding: 9px 8px; text-align: right; font-weight: 700; font-size: 13px;">
+                                        <t t-esc="'%.2f' % doc.total_ipc_amount"/>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <!-- Accounting + Summary side by side -->
+                        <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+
+                            <!-- Accounting -->
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 6px; padding: 16px;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Accounting
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                                    <!-- Retention -->
+                                    <tr>
+                                        <td colspan="2" style="color: #2c3e50; font-weight: 600; padding: 6px 0 3px 0;">Retention</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px; width: 65%;">Retention %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % (doc.retention_percentage * 100)"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Retention Previous</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.retention_previous"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Retention Current</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.retention_current"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #dee2e6;">
+                                        <td style="color: #7f8c8d; padding: 3px 0 8px 10px;">Retention Accumulative</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.retention_cumulative"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Advance -->
+                                    <tr>
+                                        <td colspan="2" style="color: #2c3e50; font-weight: 600; padding: 8px 0 3px 0;">Advance Recovery</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Advance %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % (doc.advance_percentage * 100)"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Advance Total Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.advance_total_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Recovered Before</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.advance_recovered_before"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Recovery Current</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.advance_recovery_current"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Recovery Accumulative</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.advance_recovery_cumulative"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid #dee2e6;">
+                                        <td style="color: #7f8c8d; padding: 3px 0 8px 10px;">Remaining Advance Balance</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.remaining_advance_balance"/>
+                                        </td>
+                                    </tr>
+                                    <!-- Deductions -->
+                                    <tr>
+                                        <td colspan="2" style="color: #2c3e50; font-weight: 600; padding: 8px 0 3px 0;">Deductions</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Penalty %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.penalty_percentage"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Penalty Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.penalty_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Other Deduction %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.other_deduction_percentage"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 3px 0 3px 10px;">Other Deduction Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.other_deduction_amount"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Summary -->
+                            <div style="flex: 1; background: #f8f9fa; border-radius: 6px; padding: 16px; align-self: flex-start;">
+                                <h4 style="margin: 0 0 12px 0; color: #2c3e50; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #dee2e6; padding-bottom: 6px;">
+                                    Summary
+                                </h4>
+                                <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0; width: 65%;">Gross Work Value</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.total_ipc_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Previous IPC Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.previous_ipc_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Total Deductions</td>
+                                        <td style="color: #e74c3c; font-weight: 500; text-align: right;">
+                                            (<t t-esc="'%.2f' % doc.total_deductions"/>)
+                                        </td>
+                                    </tr>
+                                    <tr style="border-top: 1px solid #dee2e6;">
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Net Before Tax</td>
+                                        <td style="color: #2c3e50; font-weight: 600; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.net_before_tax"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Tax %</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.tax_percentage"/>%
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #7f8c8d; padding: 5px 0;">Tax Amount</td>
+                                        <td style="color: #2c3e50; font-weight: 500; text-align: right;">
+                                            <t t-esc="'%.2f' % doc.tax_amount"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-top: 2px solid #2c3e50;">
+                                        <td style="color: #2c3e50; padding: 8px 0; font-weight: 700; font-size: 13px;">Final Net Amount</td>
+                                        <td style="color: #27ae60; font-weight: 700; text-align: right; font-size: 14px;">
+                                            <t t-esc="'%.2f' % doc.final_net_amount"/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Remarks -->
+                                <div t-if="doc.remarks" style="margin-top: 16px; border-top: 1px solid #dee2e6; padding-top: 10px;">
+                                    <span style="color: #7f8c8d; font-size: 12px; font-weight: 600;">Remarks:</span>
+                                    <p style="margin: 4px 0 0 0; color: #555; font-size: 12px;">
+                                        <t t-esc="doc.remarks"/>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="border-top: 1px solid #dee2e6; padding-top: 10px; font-size: 11px; color: #aaa; text-align: center;">
+                            Generated by Construction Module · <t t-esc="doc.name"/> · <t t-esc="doc.boq_id.name"/>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

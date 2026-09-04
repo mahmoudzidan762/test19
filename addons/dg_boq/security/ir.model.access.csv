@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bill_of_quantity,access_bill_of_quantity,model_bill_of_quantity,,1,1,1,1
+access_bill_of_quantity_line,access_bill_of_quantity_line,model_bill_of_quantity_line,,1,1,1,1
+access_boq_sub_item,access_boq_sub_item,model_boq_sub_item,,1,1,1,1
+access_variation_order,access_variation_order,model_variation_order,,1,1,1,1
+access_cost_details_line,access_cost_details_line,model_cost_details_line,,1,1,1,1
+access_res_partner,access_res_partner,model_res_partner,,1,1,1,1
+access_subcontractor_request_wizard,access_subcontractor_request_wizard,model_subcontractor_request_wizard,,1,1,1,1
+access_material_purchase_requisition,access_material_purchase_requisition,model_material_purchase_requisition,,1,1,1,1
+access_purchase_requisition_line,access_purchase_requisition_line,model_purchase_requisition_line,,1,1,1,1
+access_purchase_requisition,access_purchase_requisition,model_purchase_requisition,,1,1,1,1
+access_ipc_certificate,access_ipc_certificate,model_ipc_certificate,,1,1,1,1
+access_account_move,access_account_move,model_account_move,,1,1,1,1
+access_purchase_order,access_purchase_order,model_purchase_order,,1,1,1,1
+access_account_tax_group,access_account_tax_group,model_account_tax_group,,1,1,1,1

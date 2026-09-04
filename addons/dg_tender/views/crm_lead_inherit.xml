@@ -1,0 +1,135 @@
+<odoo>
+
+    <record id="crm_lead_inherit_form_view" model="ir.ui.view">
+        <field name="name">crm.lead.inherit.form.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet//div" position="inside">
+                <button name="action_open_bid_file"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-tasks"
+                        invisible="project_type != 'tender'">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">
+                            Bid File
+                        </span>
+                    </div>
+                </button>
+                <button name="action_open_estimation"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-tasks"
+                        invisible="project_type != 'private'">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">
+                            Estimation
+                        </span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//button[@name='action_sale_quotations_new']" position="attributes">
+                <attribute name="invisible">project_type != 'product'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_sale_quotation']" position="attributes">
+                <attribute name="invisible">project_type != 'product'</attribute>
+            </xpath>
+            <xpath expr="//form/header" position="inside">
+                <button name="action_create_bid_file" type="object" string="Create Bid file"
+                        class="oe_highlight" invisible="project_type != 'tender'"/>
+                <button name="action_estimation" type="object" string="Estimation"
+                        class="oe_highlight" invisible="project_type != 'private'"/>
+            </xpath>
+            <xpath expr="//sheet//group//group[2]" position="inside">
+                <field name="project_type"/>
+            </xpath>
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Bid Information" invisible="project_type != 'tender'">
+                    <group>
+                        <group string="Bid General Info">
+                            <field name="contracting_party" placeholder="Select..."/>
+                            <field name="contracting_agreement" placeholder="Select..."/>
+                            <field name="contract_term_type" placeholder="Select..."/>
+                            <field name="invitation_for_bid_date" placeholder="Enter the Date..."/>
+                            <field name="tender_booklet_value"/>
+                            <field name="project_name"/>
+                            <field name="project_code"/>
+                        </group>
+
+                        <group string="Customer Info">
+                            <field name="customer_responsible_person_id" placeholder="Select..."/>
+                            <field name="phone" placeholder="add Phone..."/>
+                            <field name="mobile" placeholder="add Mobile..."/>
+                            <field name="email" placeholder="add email..."/>
+                            <field name="submit_address" placeholder="add address..."/>
+                        </group>
+                    </group>
+                </page>
+                <page string="End User">
+                    <group>
+                        <group>
+                            <field name="end_user_name"/>
+                            <field name="end_user_contact_person"/>
+                            <field name="end_user_phone_number"/>
+                        </group>
+                        <group>
+                            <field name="end_user_email"/>
+                            <field name="end_user_location"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Consultant">
+                    <group>
+                        <group>
+                            <field name="consultant_firm_name"/>
+                            <field name="consultant_contact_person"/>
+                            <field name="consultant_phone_number"/>
+                        </group>
+                        <group>
+                            <field name="consultant_email"/>
+                            <field name="consultant_location"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//sheet//notebook" position="before">
+                <group string="ADDITIONAL PROJECT DETAILS">
+                    <group>
+                        <field name="project_category" widget="many2many_tags"/>
+                        <field name="submission_date"/>
+                        <field name="service_category" widget="radio" options="{'horizontal': true}"/>
+                    </group>
+                    <group>
+                        <field name="project_status"/>
+                        <field name="required_registration"/>
+                        <field name="site_survey_required"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//form//sheet//group//group[2]//field[@name='partner_id']" position="after">
+                <field name="english_name"/>
+            </xpath>
+            <xpath expr="//form//sheet//group//group[2]//field[@name='partner_id']" position="attributes">
+                <attribute name="string">Arabic Name</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="crm_lead_inherit_list_view" model="ir.ui.view">
+        <field name="name">crm.lead.inherit.list.view</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//field[@name='contact_name']" position="replace">
+                <field name="partner_id" string="Arabic Name"/>
+                <field name="english_name"/>
+                <field name="project_category"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

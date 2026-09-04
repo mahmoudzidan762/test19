@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_login_history_user,access.login.history.user,model_login_history,base.group_user,1,0,0,0
+access_login_history_admin,access.login.history.admin,model_login_history,base.group_system,1,1,1,1
+access_login_failed_history_user,access.login.failed.history.user,model_login_failed_history,base.group_user,1,0,0,0
+access_login_failed_history_admin,access.login.failed.history.admin,model_login_failed_history,base.group_system,1,1,1,1
+
+
+
+access_mst_user_activity_log_admin,mst.user.activity.log.admin,model_mst_user_activity_log,base.group_system,1,0,0,0
+access_mst_user_activity_log_line_admin,mst.user.activity.log.line.admin,model_mst_user_activity_log_line,base.group_system,1,0,0,0
+access_mst_activity_log_model_config_admin,mst.activity.log.model.config.admin,model_mst_activity_log_model_config,base.group_system,1,1,1,1
+
+
+
+
+
